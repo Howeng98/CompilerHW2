@@ -15,10 +15,10 @@
 
 
     /* Symbol table function - you can add new function if needed. */
-    static void create_symbol(/* ... */);
-    static void insert_symbol(/* ... */);
-    static void lookup_symbol(/* ... */);
-    static void dump_symbol(/* ... */);
+    // static void create_symbol(/* ... */);
+    // static void insert_symbol(/* ... */);
+    // static void lookup_symbol(/* ... */);
+    // static void dump_symbol(/* ... */);
 %}
 
 %error-verbose
@@ -26,6 +26,7 @@
 /* Use variable or self-defined structure to represent
  * nonterminal and token type
  */
+
 %union {
     int i_val;
     float f_val;
@@ -36,6 +37,8 @@
 /* Token without return */
 %token INT FLOAT BOOL STRING
 %token SEMICOLON
+%token PRINT
+%token IDENT
 
 /* Token with return, which need to sepcify type */
 %token <i_val> INT_LIT
@@ -54,8 +57,13 @@ Program
     : StatementList
 ;
 
+StatementList
+    : StatementList Statement
+    | Statement
+;
+
 Type
-    : TypeName { $$ = $1; }
+    : TypeName
 ;
 
 TypeName
@@ -82,6 +90,25 @@ Statement
     | PrintStmt
 ;
 
+DeclarationStmt
+    : INT_LIT
+;
+
+Block
+    : INT_LIT
+;
+
+IfStmt
+    : INT_LIT
+;
+
+LoopStmt
+    : INT_LIT
+;
+
+PrintStmt
+    : INT_LIT
+;
 %%
 
 /* C code section */

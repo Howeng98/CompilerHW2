@@ -1,0 +1,234 @@
+Nonterminals useless in grammar
+
+    Type
+    TypeName
+    Literal
+
+
+Terminals unused in grammar
+
+    INT
+    FLOAT
+    BOOL
+    STRING
+    SEMICOLON
+    PRINT
+    IDENT
+    FLOAT_LIT
+    STRING_LIT
+
+
+Rules useless in grammar
+
+   14 Type: TypeName
+
+   15 TypeName: INT
+   16         | FLOAT
+   17         | STRING
+   18         | BOOL
+
+   19 Literal: INT_LIT
+   20        | FLOAT_LIT
+
+
+Rules useless in parser due to conflicts
+
+   10 Block: INT_LIT
+
+   11 IfStmt: INT_LIT
+
+   12 LoopStmt: INT_LIT
+
+   13 PrintStmt: INT_LIT
+
+
+State 1 conflicts: 8 reduce/reduce
+
+
+Grammar
+
+    0 $accept: Program $end
+
+    1 Program: StatementList
+
+    2 StatementList: StatementList Statement
+    3              | Statement
+
+    4 Statement: DeclarationStmt
+    5          | Block
+    6          | IfStmt
+    7          | LoopStmt
+    8          | PrintStmt
+
+    9 DeclarationStmt: INT_LIT
+
+   10 Block: INT_LIT
+
+   11 IfStmt: INT_LIT
+
+   12 LoopStmt: INT_LIT
+
+   13 PrintStmt: INT_LIT
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    INT (258)
+    FLOAT (259)
+    BOOL (260)
+    STRING (261)
+    SEMICOLON (262)
+    PRINT (263)
+    IDENT (264)
+    INT_LIT <i_val> (265) 9 10 11 12 13
+    FLOAT_LIT <f_val> (266)
+    STRING_LIT <s_val> (267)
+
+
+Nonterminals, with rules where they appear
+
+    $accept (13)
+        on left: 0
+    Program (14)
+        on left: 1
+        on right: 0
+    StatementList (15)
+        on left: 2 3
+        on right: 1 2
+    Statement (16)
+        on left: 4 5 6 7 8
+        on right: 2 3
+    DeclarationStmt (17)
+        on left: 9
+        on right: 4
+    Block (18)
+        on left: 10
+        on right: 5
+    IfStmt (19)
+        on left: 11
+        on right: 6
+    LoopStmt (20)
+        on left: 12
+        on right: 7
+    PrintStmt (21)
+        on left: 13
+        on right: 8
+
+
+State 0
+
+    0 $accept: . Program $end
+
+    INT_LIT  shift, and go to state 1
+
+    Program          go to state 2
+    StatementList    go to state 3
+    Statement        go to state 4
+    DeclarationStmt  go to state 5
+    Block            go to state 6
+    IfStmt           go to state 7
+    LoopStmt         go to state 8
+    PrintStmt        go to state 9
+
+
+State 1
+
+    9 DeclarationStmt: INT_LIT .
+   10 Block: INT_LIT .
+   11 IfStmt: INT_LIT .
+   12 LoopStmt: INT_LIT .
+   13 PrintStmt: INT_LIT .
+
+    $end      reduce using rule 9 (DeclarationStmt)
+    $end      [reduce using rule 10 (Block)]
+    $end      [reduce using rule 11 (IfStmt)]
+    $end      [reduce using rule 12 (LoopStmt)]
+    $end      [reduce using rule 13 (PrintStmt)]
+    INT_LIT   reduce using rule 9 (DeclarationStmt)
+    INT_LIT   [reduce using rule 10 (Block)]
+    INT_LIT   [reduce using rule 11 (IfStmt)]
+    INT_LIT   [reduce using rule 12 (LoopStmt)]
+    INT_LIT   [reduce using rule 13 (PrintStmt)]
+    $default  reduce using rule 9 (DeclarationStmt)
+
+
+State 2
+
+    0 $accept: Program . $end
+
+    $end  shift, and go to state 10
+
+
+State 3
+
+    1 Program: StatementList .
+    2 StatementList: StatementList . Statement
+
+    INT_LIT  shift, and go to state 1
+
+    $default  reduce using rule 1 (Program)
+
+    Statement        go to state 11
+    DeclarationStmt  go to state 5
+    Block            go to state 6
+    IfStmt           go to state 7
+    LoopStmt         go to state 8
+    PrintStmt        go to state 9
+
+
+State 4
+
+    3 StatementList: Statement .
+
+    $default  reduce using rule 3 (StatementList)
+
+
+State 5
+
+    4 Statement: DeclarationStmt .
+
+    $default  reduce using rule 4 (Statement)
+
+
+State 6
+
+    5 Statement: Block .
+
+    $default  reduce using rule 5 (Statement)
+
+
+State 7
+
+    6 Statement: IfStmt .
+
+    $default  reduce using rule 6 (Statement)
+
+
+State 8
+
+    7 Statement: LoopStmt .
+
+    $default  reduce using rule 7 (Statement)
+
+
+State 9
+
+    8 Statement: PrintStmt .
+
+    $default  reduce using rule 8 (Statement)
+
+
+State 10
+
+    0 $accept: Program $end .
+
+    $default  accept
+
+
+State 11
+
+    2 StatementList: StatementList Statement .
+
+    $default  reduce using rule 2 (StatementList)

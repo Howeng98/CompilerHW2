@@ -42,13 +42,14 @@ newline		[\n]
 "-"         { return '-'; }
 "*"         { return '*'; }
 
+
 "print"     { return PRINT; }
 
 {inumber}   { yylval.i_val = atoi(yytext);
                 return INT_LIT;
             }
 
-{id}        { yylval.ctr.id_name = strdup(yytext);
+{id}        { ;
                 return IDENT;
             }
 [;]         { return SEMICOLON; }
