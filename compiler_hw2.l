@@ -6,6 +6,7 @@
 
     #define YY_NO_UNPUT
     #define YY_NO_INPUT
+    char var_name[50];
 %}
 
 
@@ -38,21 +39,68 @@ newline		[\n]
 <STR>[^\"]* { yylval.s_val = strdup(yytext);
                 return STRING_LIT;
             }
-"+"         { return '+'; }
-"-"         { return '-'; }
-"*"         { return '*'; }
 
+"+"          { return ADD; }
+"-"          { return SUB; }
+"*"          { return MUL; }
+"/"          { return QUO; }
+"%"          { return REM; }
+"++"         { return INC; }
+"--"         { return DEC; }
 
-"print"     { return PRINT; }
+">"          { return GTR; }
+"<"          { return LST; }
+">="         { return GEQ; }
+"<="         { return LEQ; }
+"=="         { return EQL; }
+"!="         { return NEQ; }
+
+"="          { return ASSIGN; }
+"+="         { return ADD_ASSIGN; }
+"-="         { return SUB_ASSIGN; }
+"*="         { return MUL_ASSIGN; }
+"/="         { return QUO_ASSIGN; }
+"%="         { return REM_ASSIGN; }
+
+"&&"         { return LAND; }
+"||"         { return LOR; }
+"!"          { return NOT; }
+
+"("          { return '('; }
+")"          { return ')'; }
+"["          { return '['; }
+"]"          { return ']'; }
+"{"          { return '{'; }
+"}"          { return '}'; }
+
+";"          { return SEMICOLON; }
+","          { return ','; }
+
+"if"         { return IF; }
+"else"       { return ELSE; }
+"while"      { return WHILE; }
+"for"        { return FOR; }
+"print"      { return PRINT; }
+"println"    { return PRINTLN; }
+
+"int"      { return INT; }
+"float"    { return FLOAT; }
+"string"     { return STRING; }
+"bool"       { return BOOL; }
+"true"       { return TRUE; }
+"false"      { return FALSE; }
+"var"        { return VAR; }
 
 {inumber}   { yylval.i_val = atoi(yytext);
                 return INT_LIT;
             }
+{fnumber}   { yylval.f_val = atof(yytext);
+                return FLOAT_LIT;
+            }
 
-{id}        { ;
+{id}        {   strcpy(var_name,strdup(yytext));
                 return IDENT;
             }
-[;]         { return SEMICOLON; }
 [\n]        {;}
 <<EOF>>     { static int once = 0;
                 if (once++) {

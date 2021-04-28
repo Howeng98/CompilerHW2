@@ -49,42 +49,104 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    INT = 258,
-    FLOAT = 259,
-    BOOL = 260,
-    STRING = 261,
-    SEMICOLON = 262,
-    PRINT = 263,
-    IDENT = 264,
-    INT_LIT = 265,
-    FLOAT_LIT = 266,
-    STRING_LIT = 267
+    VAR = 258,
+    ADD = 259,
+    SUB = 260,
+    MUL = 261,
+    QUO = 262,
+    REM = 263,
+    INT = 264,
+    FLOAT = 265,
+    BOOL = 266,
+    STRING = 267,
+    INC = 268,
+    DEC = 269,
+    GEQ = 270,
+    LEQ = 271,
+    EQL = 272,
+    NEQ = 273,
+    LST = 274,
+    GTR = 275,
+    ASSIGN = 276,
+    ADD_ASSIGN = 277,
+    SUB_ASSIGN = 278,
+    MUL_ASSIGN = 279,
+    QUO_ASSIGN = 280,
+    REM_ASSIGN = 281,
+    LAND = 282,
+    LOR = 283,
+    NOT = 284,
+    NEWLINE = 285,
+    SEMICOLON = 286,
+    IF = 287,
+    ELSE = 288,
+    WHILE = 289,
+    FOR = 290,
+    PRINT = 291,
+    PRINTLN = 292,
+    TRUE = 293,
+    FALSE = 294,
+    INT_LIT = 295,
+    FLOAT_LIT = 296,
+    STRING_LIT = 297,
+    IDENT = 298
   };
 #endif
 /* Tokens.  */
-#define INT 258
-#define FLOAT 259
-#define BOOL 260
-#define STRING 261
-#define SEMICOLON 262
-#define PRINT 263
-#define IDENT 264
-#define INT_LIT 265
-#define FLOAT_LIT 266
-#define STRING_LIT 267
+#define VAR 258
+#define ADD 259
+#define SUB 260
+#define MUL 261
+#define QUO 262
+#define REM 263
+#define INT 264
+#define FLOAT 265
+#define BOOL 266
+#define STRING 267
+#define INC 268
+#define DEC 269
+#define GEQ 270
+#define LEQ 271
+#define EQL 272
+#define NEQ 273
+#define LST 274
+#define GTR 275
+#define ASSIGN 276
+#define ADD_ASSIGN 277
+#define SUB_ASSIGN 278
+#define MUL_ASSIGN 279
+#define QUO_ASSIGN 280
+#define REM_ASSIGN 281
+#define LAND 282
+#define LOR 283
+#define NOT 284
+#define NEWLINE 285
+#define SEMICOLON 286
+#define IF 287
+#define ELSE 288
+#define WHILE 289
+#define FOR 290
+#define PRINT 291
+#define PRINTLN 292
+#define TRUE 293
+#define FALSE 294
+#define INT_LIT 295
+#define FLOAT_LIT 296
+#define STRING_LIT 297
+#define IDENT 298
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 30 "compiler_hw2.y"
+#line 54 "compiler_hw2.y"
 
     int i_val;
     float f_val;
     char *s_val;
     /* ... */
 
-#line 88 "y.tab.h"
+#line 150 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
