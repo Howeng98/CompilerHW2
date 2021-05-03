@@ -49,104 +49,102 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    VAR = 258,
-    ADD = 259,
-    SUB = 260,
-    MUL = 261,
-    QUO = 262,
-    REM = 263,
-    INT = 264,
-    FLOAT = 265,
-    BOOL = 266,
-    STRING = 267,
-    INC = 268,
-    DEC = 269,
-    GEQ = 270,
-    LEQ = 271,
-    EQL = 272,
-    NEQ = 273,
-    LST = 274,
-    GTR = 275,
-    ASSIGN = 276,
-    ADD_ASSIGN = 277,
-    SUB_ASSIGN = 278,
-    MUL_ASSIGN = 279,
-    QUO_ASSIGN = 280,
-    REM_ASSIGN = 281,
-    LAND = 282,
-    LOR = 283,
-    NOT = 284,
-    NEWLINE = 285,
-    SEMICOLON = 286,
-    IF = 287,
-    ELSE = 288,
-    WHILE = 289,
-    FOR = 290,
-    PRINT = 291,
-    PRINTLN = 292,
-    TRUE = 293,
-    FALSE = 294,
-    INT_LIT = 295,
-    FLOAT_LIT = 296,
-    STRING_LIT = 297,
-    IDENT = 298
+    ADD = 258,
+    SUB = 259,
+    MUL = 260,
+    QUO = 261,
+    REM = 262,
+    INT = 263,
+    FLOAT = 264,
+    BOOL = 265,
+    STRING = 266,
+    INC = 267,
+    DEC = 268,
+    GEQ = 269,
+    LEQ = 270,
+    EQL = 271,
+    NEQ = 272,
+    LST = 273,
+    GTR = 274,
+    ASSIGN = 275,
+    ADD_ASSIGN = 276,
+    SUB_ASSIGN = 277,
+    MUL_ASSIGN = 278,
+    QUO_ASSIGN = 279,
+    REM_ASSIGN = 280,
+    LAND = 281,
+    LOR = 282,
+    NOT = 283,
+    SEMICOLON = 284,
+    IF = 285,
+    ELSE = 286,
+    WHILE = 287,
+    FOR = 288,
+    PRINT = 289,
+    TRUE = 290,
+    FALSE = 291,
+    Unary = 292,
+    INT_LIT = 293,
+    FLOAT_LIT = 294,
+    STRING_LIT = 295,
+    IDENT = 296
   };
 #endif
 /* Tokens.  */
-#define VAR 258
-#define ADD 259
-#define SUB 260
-#define MUL 261
-#define QUO 262
-#define REM 263
-#define INT 264
-#define FLOAT 265
-#define BOOL 266
-#define STRING 267
-#define INC 268
-#define DEC 269
-#define GEQ 270
-#define LEQ 271
-#define EQL 272
-#define NEQ 273
-#define LST 274
-#define GTR 275
-#define ASSIGN 276
-#define ADD_ASSIGN 277
-#define SUB_ASSIGN 278
-#define MUL_ASSIGN 279
-#define QUO_ASSIGN 280
-#define REM_ASSIGN 281
-#define LAND 282
-#define LOR 283
-#define NOT 284
-#define NEWLINE 285
-#define SEMICOLON 286
-#define IF 287
-#define ELSE 288
-#define WHILE 289
-#define FOR 290
-#define PRINT 291
-#define PRINTLN 292
-#define TRUE 293
-#define FALSE 294
-#define INT_LIT 295
-#define FLOAT_LIT 296
-#define STRING_LIT 297
-#define IDENT 298
+#define ADD 258
+#define SUB 259
+#define MUL 260
+#define QUO 261
+#define REM 262
+#define INT 263
+#define FLOAT 264
+#define BOOL 265
+#define STRING 266
+#define INC 267
+#define DEC 268
+#define GEQ 269
+#define LEQ 270
+#define EQL 271
+#define NEQ 272
+#define LST 273
+#define GTR 274
+#define ASSIGN 275
+#define ADD_ASSIGN 276
+#define SUB_ASSIGN 277
+#define MUL_ASSIGN 278
+#define QUO_ASSIGN 279
+#define REM_ASSIGN 280
+#define LAND 281
+#define LOR 282
+#define NOT 283
+#define SEMICOLON 284
+#define IF 285
+#define ELSE 286
+#define WHILE 287
+#define FOR 288
+#define PRINT 289
+#define TRUE 290
+#define FALSE 291
+#define Unary 292
+#define INT_LIT 293
+#define FLOAT_LIT 294
+#define STRING_LIT 295
+#define IDENT 296
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 54 "compiler_hw2.y"
+#line 56 "compiler_hw2.y"
 
     int i_val;
     float f_val;
     char *s_val;
-    /* ... */
+    char *id;
+    char *boool;
+    char *type;    
 
-#line 150 "y.tab.h"
+#line 148 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

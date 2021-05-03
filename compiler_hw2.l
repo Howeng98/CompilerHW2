@@ -81,7 +81,6 @@ newline		[\n]
 "while"      { return WHILE; }
 "for"        { return FOR; }
 "print"      { return PRINT; }
-"println"    { return PRINTLN; }
 
 "int"      { return INT; }
 "float"    { return FLOAT; }
@@ -89,7 +88,6 @@ newline		[\n]
 "bool"       { return BOOL; }
 "true"       { return TRUE; }
 "false"      { return FALSE; }
-"var"        { return VAR; }
 
 {inumber}   { yylval.i_val = atoi(yytext);
                 return INT_LIT;
@@ -98,7 +96,7 @@ newline		[\n]
                 return FLOAT_LIT;
             }
 
-{id}        {   strcpy(var_name,strdup(yytext));
+{id}        { yylval.id = strdup(yytext);
                 return IDENT;
             }
 [\n]        {;}

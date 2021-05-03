@@ -1,6 +1,8 @@
 /*	Definition section */
 %{
     #include "common.h" //Extern variables that communicate with lex
+    #include "string.h"
+    #include "stdbool.h"
     // #define YYDEBUG 1
     // int yydebug = 1;
 
@@ -8,9 +10,9 @@
     extern int yylex();
     extern FILE *yyin;
     extern char* yytext;
-    extern char var_name[50];
+    // extern char var_name[50];
 
-    char var_type[6];
+    // char var_type[6];
     int current_scope_level = 0;
     int address = 0;
     char arithmetic[5];
@@ -39,7 +41,7 @@
     struct symbol_table symbol_table[50];
     /* Symbol table function - you can add new function if needed. */
     static void create_symbol(void);
-    static void insert_symbol();
+    static void insert_symbol(char* var_name, char* var_type, int lineno, char* element);
     static int lookup_symbol(char* name);
     static void dump_symbol(void);
     void printList(struct symbol_table* head);
@@ -55,28 +57,49 @@
     int i_val;
     float f_val;
     char *s_val;
-    /* ... */
+    char *id;
+    char *boool;
+    char *type;    
 }
 
+
 /* Token without return */
-%token VAR
 %token ADD SUB MUL QUO REM
 %token INT FLOAT BOOL STRING
 %token INC DEC
 %token GEQ LEQ EQL NEQ LST GTR
 %token ASSIGN ADD_ASSIGN SUB_ASSIGN MUL_ASSIGN QUO_ASSIGN REM_ASSIGN
 %token LAND LOR NOT
-%token NEWLINE SEMICOLON
-%token IF ELSE WHILE FOR PRINT PRINTLN
+%token SEMICOLON
+%token IF ELSE WHILE FOR PRINT
 %token TRUE FALSE
+
+
+
+%right LOR LAND
+%left LST GTR GEQ LEQ NEQ EQL
+%left ASSIGN
+%left ADD SUB
+%left ADD_ASSIGN SUB_ASSIGN
+%left MUL QUO REM
+%left MUL_ASSIGN QUO_ASSIGN REM_ASSIGN
+%right NOT INC DEC 
+%left '[' ']'
+%nonassoc '(' ')'
+%left SEMICOLON
+%right Unary
 
 /* Token with return, which need to sepcify type */
 %token <i_val> INT_LIT
 %token <f_val> FLOAT_LIT
 %token <s_val> STRING_LIT
-%token <s_val> IDENT
+%token <id> IDENT
 
 /* Nonterminal with return, which need to sepcify type */
+%type <boool> LogicalExpr CompareExpr
+%type <type> Expression ConversionExpr AssignmentExpr LoopCondition BoolExpr Assign ArithmeticExpr TermExpr Bool Num Type Bracket 
+%type <id>   ID
+
 
 /* Yacc will start at this nonterminal */
 %start Program
@@ -85,236 +108,234 @@
 %%
 
 Program
-    : StatementList     
+    : StatementList
 ;
 
 StatementList
-    : StatementList Statement
-    | Statement
+    : StatementList Statement SEMICOLON
+    | Statement SEMICOLON
 ;
 
 Statement
-    : DeclarationStmt    
-    | AssignmentStmt
-    | IncDecStmt
-    | Block
+    : PRINT Bracket {
+        printf("PRINT %s\n", $2);
+    }
+    | DeclarationStmt            
     | IfStmt
-    | WhileStmt
-    | ForStmt
-    | PrintStmt
     | Expression
+    | LoopStmt
+    | Expression    
 ;
 
-Type
-    : TypeName
+IfStmt
+    : IF Expression {
+        ;
+    }
+    | ELSE
 ;
 
-TypeName
-    : INT   {
-        // printf("Int here\n");
-        strcpy(var_type,"int");
-    }
-    | FLOAT {
-        // printf("Float here\n");
-        strcpy(var_type,"float");
-    }
-    | STRING    {
-        printf("String here\n");
-    }
-    | BOOL  {
-        printf("Bool here\n");
-    }
+LoopStmt
+    : FOR LoopCondition
 ;
 
-Expression
-    : UnaryExpr    
-    | Expression ADD Expression SEMICOLON{
-        printf("ADD\n");
+LoopCondition
+    : Expression '{' {
+        ;
     }
-    | Expression SUB Expression SEMICOLON{
-        printf("SUB\n");
-    }
-    | Expression MUL Expression SEMICOLON{
-        printf("MUL\n");
-    }
-    | Expression QUO Expression SEMICOLON{
-        printf("QUO\n");
-    }
-    | Expression REM Expression SEMICOLON{
-        printf("REM\n");
-    }
-;
-
-UnaryExpr
-    : PrimaryExpr    
-    | unary_op UnaryExpr
-    | binary_op
-;
-
-unary_op
-    : NOT
-;
-
-binary_op
-    : LOR
-    | LAND
-    | cmp_op
-    | add_op
-    | mul_op
-;
-
-cmp_op
-    : EQL
-    | NEQ
-    | LST
-    | LEQ
-    | GTR
-    | GEQ
-;
-
-add_op
-    : ADD {        
-        printf("ADD\n");
-    }
-    | SUB {
-        printf("SUB\n");
-    }
-;
-
-mul_op
-    : MUL {
-        printf("MUL\n");
-    }
-    | QUO {
-        printf("QUO\n");
-    }
-    | REM {
-        printf("REM\n");
-    }
-;
-
-
-PrimaryExpr
-    : Operand 
-    | IndexExpr
-    | ConversionExpr
-;
-
-Operand
-    : Literal
-    | IDENT {
-        printf("IDENT (name=%s, address=%d)\n", var_name, lookup_symbol(var_name));
-    }
-    | '(' Expression ')'
-;
-
-Literal
-    : INT_LIT {
-        printf("INT_LIT %d\n", $<i_val>$);
-    }
-    | FLOAT_LIT {
-        printf("FLOAT_LIT %f\n", $<f_val>$);
-    }
-    | STRING_LIT {
+    | Expression ';' Expression ';' Expression '{' {
         ;
     }
 ;
 
-IndexExpr
-    : PrimaryExpr '[' Expression ']'
-;
-
-ConversionExpr
-    : Type '(' Expression ')'
-;
-
-
 DeclarationStmt
-    : Type IDENT '[' ASSIGN Expression ']' SEMICOLON
-    | Type IDENT '[' Expression ']' SEMICOLON
-    | Type IDENT SEMICOLON {
-        insert_symbol();
+    : Type IDENT {
+        insert_symbol($2, $1, yylineno, "-");
     }
+    | IDENT '[' Expression ']' Type
+    | IDENT Type '=' Expression
 ;
 
 AssignmentExpr
-    : Expression assign_op Expression
+    : IDENT '=' Expression {
+        printf("ASSIGN\n");
+    }
+    | IDENT '[' Expression ']' '=' Expression
+    | IDENT ADD_ASSIGN Expression
+    | IDENT SUB_ASSIGN Expression
+    | IDENT MUL_ASSIGN Expression
+    | IDENT QUO_ASSIGN Expression
+    | IDENT REM_ASSIGN Expression
 ;
 
-AssignmentStmt
-    : AssignmentExpr SEMICOLON
+Assign
+    : ASSIGN { 
+        $$ = "ASSIGN";
+    }
+    | ADD_ASSIGN { 
+        $$ = "ADD_ASSIGN";
+    }
+    | SUB_ASSIGN { 
+        $$ = "SUB_ASSIGN";
+    }
+    | MUL_ASSIGN { 
+        $$ = "MUL_ASSIGN";
+    }
+    | QUO_ASSIGN { 
+        $$ = "QUO_ASSIGN";
+    }
+    | REM_ASSIGN { 
+        $$ = "REM_ASSIGN";
+    }
 ;
 
-assign_op
-    : ASSIGN
-    | ADD_ASSIGN
-    | SUB_ASSIGN
-    | MUL_ASSIGN
-    | QUO_ASSIGN
-    | REM_ASSIGN
+Type
+    : INT { 
+        $$ = "int";
+    }
+    | FLOAT { 
+        $$ = "float";
+    }
+    | STRING { 
+        $$ = "string";
+    }
+    | BOOL { 
+        $$ = "bool";
+    }
 ;
 
-IncDecExpr
-    : INC {
+Expression
+    : AssignmentExpr 
+    | ArithmeticExpr
+    | ConversionExpr
+    | TermExpr
+    | BoolExpr      
+;
+
+ArithmeticExpr
+    : Expression ADD Expression {
+        printf("ADD\n");
+    }
+    | Expression SUB Expression {
+        printf("SUB\n");
+    }
+    | Expression MUL Expression {
+        printf("MUL\n");
+    }
+    | Expression QUO Expression {
+        printf("QUO\n");
+    }
+    | Expression REM Expression {
+        printf("REM\n");
+    }
+;
+
+ConversionExpr
+    : INT '(' IDENT ')'     {;}
+    | FLOAT '(' IDENT ')'   {;}
+    | INT '(' Num ')'       {;}
+    | FLOAT '(' Num ')'     {;}
+;
+
+BoolExpr
+    : LogicalExpr {
+        $$ = "bool";
+    }
+    | CompareExpr {
+        $$ = "bool";
+    }
+;
+
+LogicalExpr
+    : Expression LOR Expression {
+        printf("OR\n");
+    }
+    | Expression LAND Expression {
+        printf("AND\n");
+    }
+;
+
+CompareExpr
+    : Expression GTR Expression {
+        printf("GTR\n"); 
+    }
+    | Expression LST Expression { 
+        printf("LST\n"); 
+    }
+    | Expression GEQ Expression { 
+        printf("GEQ\n"); 
+    }
+    | Expression LEQ Expression { 
+        printf("LEQ\n"); 
+    }
+    | Expression EQL Expression { 
+        printf("EQL\n"); 
+    }
+    | Expression NEQ Expression { 
+        printf("NEQ\n"); 
+    }
+;
+
+Bool
+    : TRUE { 
+        printf("TRUE\n");
+        $$ = "bool";
+    }
+    | FALSE { 
+        printf("FALSE\n"); 
+        $$ = "bool";
+    }
+;
+
+Num
+    : INT_LIT { 
+        printf("INT_LIT %d\n", $1); $$ = "int";
+    }
+    | FLOAT_LIT { 
+        printf("FLOAT_LIT %f\n", $1); $$ = "float";
+    }
+;
+
+TermExpr
+    : ID 
+    | ID '[' Expression ']'
+    | Num
+    | Bracket
+    | Bool {
+        $$ = "bool";
+    }
+    | TermExpr INC {
         printf("INC\n");
     }
-    | DEC {
+    | TermExpr DEC {
         printf("DEC\n");
+    }
+    | ADD Num {        
+        printf("POS\n");
+        // $$ = $2;        
+    }
+    | SUB Num {        
+        printf("NEG\n");        
+        // $$ = $2;
+    } 
+    | NOT Expression {
+        printf("NOT\n");
     }
 ;
 
-IncDecStmt
-    : Expression IncDecExpr SEMICOLON
+ID
+    : IDENT {
+        // printf("IDENT (name)\n");
+        printf("IDENT (name=%s, address=%d)\n", $1, lookup_symbol($1));
+    }
 ;
 
-Block
-    : '{' StatementList '}'
+Bracket
+    : '(' Expression ')'    { 
+        $$=$2;
+    }
+    | '{'                   {;}
+    | '}'                   {;}
 ;
-
-// StatementList
-//     : { Statement }
-// ;
-
-IfStmt
-    : IF Condition Block 
-    | ELSE
-;
-
-Condition
-    : Expression
-;
-
-WhileStmt
-    : WHILE '(' Condition ')' Block
-;
-
-ForStmt
-    : FOR '(' ForClause ')' Block
-;
-
-ForClause
-    : InitStmt SEMICOLON Condition SEMICOLON PostStmt
-;
-
-InitStmt
-    : SimpleExpr
-;
-
-PostStmt
-    : SimpleExpr
-;
-
-SimpleExpr
-    : AssignmentExpr
-    | Expression
-    | IncDecExpr
-;
-
-PrintStmt
-    : PRINT '(' Expression ')' SEMICOLON
-;
-
-
 
 %%
 
@@ -340,7 +361,7 @@ static void create_symbol(void){
     ;
 }
 
-static void insert_symbol(void){
+static void insert_symbol(char* var_name, char* var_type, int lineno, char* element){
     node = (struct symbol_table*)malloc(sizeof(struct symbol_table));
     node->next = NULL;
     node->index = index_in_each_scope[current_scope_level];
@@ -349,8 +370,8 @@ static void insert_symbol(void){
     strcpy(node->type, var_type);
     node->address = address;
     address++;
-    node->lineno = yylineno;
-    strcpy(node->element_type,"-");
+    node->lineno = lineno;
+    strcpy(node->element_type,element);
 
     if(head == NULL){
         head = node;
@@ -396,8 +417,8 @@ static void dump_symbol(void){
 void printList(struct symbol_table* head){
     // printf("Linked_List:");
     if(head == NULL){
-        perror("Error:Head is NULL!");
-        exit(EXIT_FAILURE);
+        // perror("Error:Head is NULL!");
+        return;
     }
     else{
         current = head;
