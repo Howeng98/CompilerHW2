@@ -83,11 +83,10 @@ extern int yydebug;
     PRINT = 289,
     TRUE = 290,
     FALSE = 291,
-    Unary = 292,
-    INT_LIT = 293,
-    FLOAT_LIT = 294,
-    STRING_LIT = 295,
-    IDENT = 296
+    INT_LIT = 292,
+    FLOAT_LIT = 293,
+    STRING_LIT = 294,
+    IDENT = 295
   };
 #endif
 /* Tokens.  */
@@ -125,17 +124,16 @@ extern int yydebug;
 #define PRINT 289
 #define TRUE 290
 #define FALSE 291
-#define Unary 292
-#define INT_LIT 293
-#define FLOAT_LIT 294
-#define STRING_LIT 295
-#define IDENT 296
+#define INT_LIT 292
+#define FLOAT_LIT 293
+#define STRING_LIT 294
+#define IDENT 295
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 56 "compiler_hw2.y"
+#line 59 "compiler_hw2.y"
 
     int i_val;
     float f_val;
@@ -144,7 +142,7 @@ union YYSTYPE
     char *boool;
     char *type;    
 
-#line 148 "y.tab.h"
+#line 146 "y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

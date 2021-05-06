@@ -1,3 +1,5 @@
+// TODO: 
+
 /*	Definition section */
 %{
     #include "common.h" //Extern variables that communicate with lex
@@ -42,9 +44,10 @@
     /* Symbol table function - you can add new function if needed. */
     static void create_symbol(void);
     static void insert_symbol(char* var_name, char* var_type, int lineno, char* element);
-    static int lookup_symbol(char* name);
+    static int lookup_symbol(char* var_name);
     static void dump_symbol(void);
     void printList(struct symbol_table* head);
+    char* getType(char* var_name);
 %}
 
 %error-verbose
@@ -84,10 +87,11 @@
 %left MUL QUO REM
 %left MUL_ASSIGN QUO_ASSIGN REM_ASSIGN
 %right NOT INC DEC 
-%left '[' ']'
+%left '[' ']' 
+%left '{' '}'
 %nonassoc '(' ')'
 %left SEMICOLON
-%right Unary
+
 
 /* Token with return, which need to sepcify type */
 %token <i_val> INT_LIT
@@ -97,9 +101,9 @@
 
 /* Nonterminal with return, which need to sepcify type */
 %type <boool> LogicalExpr CompareExpr
-%type <type> Expression ConversionExpr AssignmentExpr LoopCondition BoolExpr Assign ArithmeticExpr TermExpr Bool Num Type Bracket 
+%type <type> Expression ConversionExpr AssignmentExpr LoopCondition
+%type <type> BoolExpr ArithmeticExpr TermExpr Bool Num Type Bracket 
 %type <id>   ID
-
 
 /* Yacc will start at this nonterminal */
 %start Program
@@ -108,23 +112,35 @@
 %%
 
 Program
-    : StatementList
+    : StatementList 
 ;
 
 StatementList
-    : StatementList Statement SEMICOLON
-    | Statement SEMICOLON
+    : StatementList Statement SEMICOLON {
+        // printf("Stmt1\n");
+    }
+    | Statement SEMICOLON{
+        // printf("Stmt2\n");
+    }
+    | StatementList Statement {
+        // printf("Stmt3\n");    
+    }    
 ;
 
 Statement
     : PRINT Bracket {
         printf("PRINT %s\n", $2);
     }
-    | DeclarationStmt            
+    | DeclarationStmt {
+        // printf("declaration\n");
+    }
     | IfStmt
-    | Expression
-    | LoopStmt
-    | Expression    
+    | Expression {
+        // printf("expression\n");
+    }
+    | LoopStmt {
+        // printf("loopstmt\n");
+    }
 ;
 
 IfStmt
@@ -135,56 +151,34 @@ IfStmt
 ;
 
 LoopStmt
-    : FOR LoopCondition
+    : FOR LoopCondition {
+        current_scope_level++;
+    }
+    | WHILE LoopCondition {
+        current_scope_level++;
+        // printf("While\n");
+    }
 ;
 
 LoopCondition
-    : Expression '{' {
-        ;
+    : Expression Bracket Expression {
+        // printf("LoopCondition1\n");
     }
     | Expression ';' Expression ';' Expression '{' {
-        ;
+        // printf("LoopCondition2\n");
     }
 ;
+
 
 DeclarationStmt
     : Type IDENT {
         insert_symbol($2, $1, yylineno, "-");
     }
-    | IDENT '[' Expression ']' Type
-    | IDENT Type '=' Expression
-;
-
-AssignmentExpr
-    : IDENT '=' Expression {
-        printf("ASSIGN\n");
+    | Type IDENT '[' Expression ']' {        
+        insert_symbol($2, "array", yylineno, $1);        
     }
-    | IDENT '[' Expression ']' '=' Expression
-    | IDENT ADD_ASSIGN Expression
-    | IDENT SUB_ASSIGN Expression
-    | IDENT MUL_ASSIGN Expression
-    | IDENT QUO_ASSIGN Expression
-    | IDENT REM_ASSIGN Expression
-;
-
-Assign
-    : ASSIGN { 
-        $$ = "ASSIGN";
-    }
-    | ADD_ASSIGN { 
-        $$ = "ADD_ASSIGN";
-    }
-    | SUB_ASSIGN { 
-        $$ = "SUB_ASSIGN";
-    }
-    | MUL_ASSIGN { 
-        $$ = "MUL_ASSIGN";
-    }
-    | QUO_ASSIGN { 
-        $$ = "QUO_ASSIGN";
-    }
-    | REM_ASSIGN { 
-        $$ = "REM_ASSIGN";
+    | Type IDENT ASSIGN Expression {          
+        insert_symbol($2, $1, yylineno, "-");
     }
 ;
 
@@ -208,7 +202,25 @@ Expression
     | ArithmeticExpr
     | ConversionExpr
     | TermExpr
-    | BoolExpr      
+    | BoolExpr          
+;
+
+AssignmentExpr
+    : ID ASSIGN Expression {
+        printf("ASSIGN\n");
+    }
+    | ID '[' Expression ']' ASSIGN Expression {                   
+        printf("ASSIGN\n");
+        // printf("IDENT (name=%s, address=%d)\n", $1, lookup_symbol($1));
+    }
+    /* | ID '[' Expression ']' Expression {
+        printf("IDENT (name=%s, address=%d)\n", $1, lookup_symbol($1));
+    }     */
+    | Expression ADD_ASSIGN Expression
+    | Expression SUB_ASSIGN Expression
+    | Expression MUL_ASSIGN Expression
+    | Expression QUO_ASSIGN Expression
+    | Expression REM_ASSIGN Expression
 ;
 
 ArithmeticExpr
@@ -286,19 +298,12 @@ Bool
     }
 ;
 
-Num
-    : INT_LIT { 
-        printf("INT_LIT %d\n", $1); $$ = "int";
-    }
-    | FLOAT_LIT { 
-        printf("FLOAT_LIT %f\n", $1); $$ = "float";
-    }
-;
-
 TermExpr
-    : ID 
-    | ID '[' Expression ']'
-    | Num
+    : ID
+    | ID '[' Expression ']' {
+        $$ = getType($$);
+    }
+    | Num 
     | Bracket
     | Bool {
         $$ = "bool";
@@ -310,31 +315,48 @@ TermExpr
         printf("DEC\n");
     }
     | ADD Num {        
-        printf("POS\n");
-        // $$ = $2;        
+        printf("POS\n");     
     }
     | SUB Num {        
         printf("NEG\n");        
-        // $$ = $2;
     } 
     | NOT Expression {
         printf("NOT\n");
+    }    
+;
+
+Num
+    : INT_LIT { 
+        $$ = "int";
+        printf("INT_LIT %d\n", $1);
+    }
+    | FLOAT_LIT {         
+        $$ = "float";
+        printf("FLOAT_LIT %f\n", $1);
+    }
+    | STRING_LIT {
+        $$ = "string";
+        printf("STRING_LIT %s\n", $1);
     }
 ;
 
 ID
-    : IDENT {
-        // printf("IDENT (name)\n");
+    : IDENT {        
         printf("IDENT (name=%s, address=%d)\n", $1, lookup_symbol($1));
     }
 ;
 
 Bracket
-    : '(' Expression ')'    { 
-        $$=$2;
+    : '(' Expression ')'{ 
+        $$=$2;        
+    }    
+    | '{' StatementList {
+        current_scope_level++;        
     }
-    | '{'                   {;}
-    | '}'                   {;}
+    | '}' {
+        current_scope_level--;
+        dump_symbol();
+    }
 ;
 
 %%
@@ -361,7 +383,7 @@ static void create_symbol(void){
     ;
 }
 
-static void insert_symbol(char* var_name, char* var_type, int lineno, char* element){
+static void insert_symbol(char* var_name, char* var_type, int lineno, char* element){    
     node = (struct symbol_table*)malloc(sizeof(struct symbol_table));
     node->next = NULL;
     node->index = index_in_each_scope[current_scope_level];
@@ -428,4 +450,49 @@ void printList(struct symbol_table* head){
         }
         printf("%-10d%-10s%-10s%-10d%-10d%s\n", current->index, current->name, current->type, current->address, current->lineno, current->element_type);
     }
+}
+
+char* getType(char* var_name){
+    if(head == NULL){
+        perror("Error: Head is NULL");
+        exit(EXIT_FAILURE);
+    }
+    else{        
+        current = head;
+
+        //FIXME: Try to use the following code to replace getType access linkedlist with go through node content before checking current->next != NULL
+
+        /* do {
+            if(!strcmp(current->name, var_name)){
+                // If type is array, then return its element_type
+                if(!strcmp(current->type, "array")){
+                    return current->element_type;
+                }                
+                else
+                    return current->type;
+            }                       
+        } while(current->next != NULL); */
+        
+        while(current->next != NULL){
+            if(!strcmp(current->name, var_name)){
+                // If type is array, then return its element_type
+                if(!strcmp(current->type, "array")){
+                    return current->element_type;
+                }                
+                else
+                    return current->type;
+            }
+            current = current->next;
+        }
+        // current->next == NULL
+        if(!strcmp(current->name, var_name)){
+            // If type is array, then return its element_type
+            if(!strcmp(current->type, "array")){
+                return current->element_type;
+            }                
+            else
+                return current->type;
+        }        
+    }
+    return NULL;
 }

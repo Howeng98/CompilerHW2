@@ -82,8 +82,8 @@ newline		[\n]
 "for"        { return FOR; }
 "print"      { return PRINT; }
 
-"int"      { return INT; }
-"float"    { return FLOAT; }
+"int"        { return INT; }
+"float"      { return FLOAT; }
 "string"     { return STRING; }
 "bool"       { return BOOL; }
 "true"       { return TRUE; }
