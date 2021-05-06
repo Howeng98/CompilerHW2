@@ -1,6 +1,5 @@
-// TODO: 
+// TODO: Deadline 2021/05/27 23:59
 
-/*	Definition section */
 %{
     #include "common.h" //Extern variables that communicate with lex
     #include "string.h"
@@ -12,9 +11,7 @@
     extern int yylex();
     extern FILE *yyin;
     extern char* yytext;
-    // extern char var_name[50];
-
-    // char var_type[6];
+    
     int current_scope_level = 0;
     int address = 0;
     char arithmetic[5];
@@ -31,6 +28,7 @@
         int address;
         int lineno;
         int scope_level;
+        int printed; // printed means the variable is dumped(printed)
         char name[10];
         char type[10];        
         char element_type[10];
@@ -154,9 +152,9 @@ LoopStmt
     : FOR LoopCondition {
         current_scope_level++;
     }
-    | WHILE LoopCondition {
-        current_scope_level++;
-        // printf("While\n");
+    | WHILE Expression Bracket StatementList Bracket{
+        // printf("------While END------\n");
+        // current_scope_level++;
     }
 ;
 
@@ -180,6 +178,9 @@ DeclarationStmt
     | Type IDENT ASSIGN Expression {          
         insert_symbol($2, $1, yylineno, "-");
     }
+    /* | Type IDENT ASSIGN STRING_LIT SEMICOLON{
+        printf("STRING_LIT %s\n", $4);
+    } */
 ;
 
 Type
@@ -210,12 +211,8 @@ AssignmentExpr
         printf("ASSIGN\n");
     }
     | ID '[' Expression ']' ASSIGN Expression {                   
-        printf("ASSIGN\n");
-        // printf("IDENT (name=%s, address=%d)\n", $1, lookup_symbol($1));
+        printf("ASSIGN\n");        
     }
-    /* | ID '[' Expression ']' Expression {
-        printf("IDENT (name=%s, address=%d)\n", $1, lookup_symbol($1));
-    }     */
     | Expression ADD_ASSIGN Expression
     | Expression SUB_ASSIGN Expression
     | Expression MUL_ASSIGN Expression
@@ -303,6 +300,9 @@ TermExpr
     | ID '[' Expression ']' {
         $$ = getType($$);
     }
+    | STRING_LIT {
+        printf("STRING_LIT %s\n", $1);
+    }
     | Num 
     | Bracket
     | Bool {
@@ -326,17 +326,13 @@ TermExpr
 ;
 
 Num
-    : INT_LIT { 
-        $$ = "int";
+    : INT_LIT {         
         printf("INT_LIT %d\n", $1);
+        $$ = "int";
     }
     | FLOAT_LIT {         
-        $$ = "float";
         printf("FLOAT_LIT %f\n", $1);
-    }
-    | STRING_LIT {
-        $$ = "string";
-        printf("STRING_LIT %s\n", $1);
+        $$ = "float";        
     }
 ;
 
@@ -348,14 +344,16 @@ ID
 
 Bracket
     : '(' Expression ')'{ 
-        $$=$2;        
+        $$=$2;
     }    
-    | '{' StatementList {
+    | '{' {        
         current_scope_level++;        
+        // printf("--- Bracket Start ---\n");
     }
-    | '}' {
-        current_scope_level--;
+    | '}' {              
         dump_symbol();
+        current_scope_level--;
+        // printf("--- Bracket END ---\n");  
     }
 ;
 
@@ -386,13 +384,15 @@ static void create_symbol(void){
 static void insert_symbol(char* var_name, char* var_type, int lineno, char* element){    
     node = (struct symbol_table*)malloc(sizeof(struct symbol_table));
     node->next = NULL;
-    node->index = index_in_each_scope[current_scope_level];
-    index_in_each_scope[current_scope_level]++;
+    node->scope_level = current_scope_level;
+    /* node->index = index_in_each_scope[current_scope_level]; */
+    /* index_in_each_scope[current_scope_level]++;     */
     strcpy(node->name, var_name);
     strcpy(node->type, var_type);
     node->address = address;
     address++;
     node->lineno = lineno;
+    node->printed = 0;
     strcpy(node->element_type,element);
 
     if(head == NULL){
@@ -415,20 +415,24 @@ static int lookup_symbol(char* var_name){
     }
     else{
         while(current->next != NULL){
-            if(!strcmp(current->name, var_name) && current->scope_level==current_scope_level){
+            // **current->scope_level == current_scope_level**
+            // make sure that current->scope_level is match current_scope_level
+
+            // **current->scope_level == 0**
+            // return current->address when the variable is define in global(scope_level 0)
+            if(!strcmp(current->name, var_name) && (current->scope_level == current_scope_level || current->scope_level == 0) && current->printed == 0){
                 return current->address;
-            }else{
-                current = current->next;
             }
+            current = current->next;            
         }
-        if(!strcmp(current->name, var_name) && current->scope_level==current_scope_level){
-                return current->address;
-        }
-        return -1;
-    }    
+        if(!strcmp(current->name, var_name) && (current->scope_level == current_scope_level || current->scope_level == 0) && current->printed == 0){
+            return current->address;
+        }        
+    }
+    return 0;    
 }
 
-static void dump_symbol(void){
+static void dump_symbol(void){    
     printf("> Dump symbol table (scope level: %d)\n", current_scope_level);
     printf("%-10s%-10s%-10s%-10s%-10s%s\n",
            "Index", "Name", "Type", "Address", "Lineno", "Element type");    
@@ -438,17 +442,25 @@ static void dump_symbol(void){
 
 void printList(struct symbol_table* head){
     // printf("Linked_List:");
+    int index = 0;
     if(head == NULL){
-        // perror("Error:Head is NULL!");
+        perror("Error:Head is NULL!");
         return;
     }
     else{
         current = head;
         while(current->next != NULL){
-            printf("%-10d%-10s%-10s%-10d%-10d%s\n", current->index, current->name, current->type, current->address, current->lineno, current->element_type);
+            // printed means the variable is dumped(printed)
+            if(current->scope_level == current_scope_level && current->printed == 0){
+                printf("%-10d%-10s%-10s%-10d%-10d%s\n", index++, current->name, current->type, current->address, current->lineno, current->element_type);
+                current->printed = 1;            
+            }
             current = current->next;
         }
-        printf("%-10d%-10s%-10s%-10d%-10d%s\n", current->index, current->name, current->type, current->address, current->lineno, current->element_type);
+        if(current->scope_level == current_scope_level && current->printed == 0){
+            printf("%-10d%-10s%-10s%-10d%-10d%s\n", index++, current->name, current->type, current->address, current->lineno, current->element_type);            
+            current->printed = 1;
+        }
     }
 }
 

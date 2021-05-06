@@ -36,7 +36,9 @@ newline		[\n]
 <STR>"\""   { BEGIN(INITIAL);
                 return '"';
             }
-<STR>[^\"]* { yylval.s_val = strdup(yytext);
+"\"".*"\"" {    yytext = yytext + 1;
+                yytext[strlen(yytext)-1] = '\0';
+                yylval.s_val = strdup(yytext);
                 return STRING_LIT;
             }
 
