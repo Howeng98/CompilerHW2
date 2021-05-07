@@ -126,9 +126,7 @@ StatementList
 ;
 
 Statement
-    : PRINT Bracket {
-        printf("PRINT %s\n", $2);
-    }
+    : PrintStmt
     | DeclarationStmt {
         // printf("declaration\n");
     }
@@ -138,6 +136,15 @@ Statement
     }
     | LoopStmt {
         // printf("loopstmt\n");
+    }
+;
+
+PrintStmt
+    : PRINT Bracket {
+        printf("PRINT %s\n", $2);
+    }
+    | PRINT '(' ID ')' {
+        printf("PRINT %s\n", getType($3));
     }
 ;
 
@@ -211,13 +218,23 @@ AssignmentExpr
         printf("ASSIGN\n");
     }
     | ID '[' Expression ']' ASSIGN Expression {                   
-        printf("ASSIGN\n");        
+        printf("ASSIGN\n");
     }
-    | Expression ADD_ASSIGN Expression
-    | Expression SUB_ASSIGN Expression
-    | Expression MUL_ASSIGN Expression
-    | Expression QUO_ASSIGN Expression
-    | Expression REM_ASSIGN Expression
+    | Expression ADD_ASSIGN Expression {
+        printf("ADD_ASSIGN\n");
+    }
+    | Expression SUB_ASSIGN Expression {
+        printf("SUB_ASSIGN\n");
+    }
+    | Expression MUL_ASSIGN Expression {
+        printf("MUL_ASSIGN\n");
+    }
+    | Expression QUO_ASSIGN Expression {
+        printf("QUO_ASSIGN\n");
+    }
+    | Expression REM_ASSIGN Expression {
+        printf("REM_ASSIGN\n");
+    }
 ;
 
 ArithmeticExpr
@@ -298,7 +315,7 @@ Bool
 TermExpr
     : ID
     | ID '[' Expression ']' {
-        $$ = getType($$);
+        $$ = getType($1);
     }
     | STRING_LIT {
         printf("STRING_LIT %s\n", $1);
