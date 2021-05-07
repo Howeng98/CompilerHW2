@@ -143,9 +143,10 @@ PrintStmt
     : PRINT Bracket {
         printf("PRINT %s\n", $2);
     }
-    | PRINT '(' ID ')' {
-        printf("PRINT %s\n", getType($3));
-    }
+    /* | PRINT '(' TermExpr ')' {
+        printf("PRINT %s\n", $3);
+    } */
+    
 ;
 
 IfStmt
@@ -317,10 +318,11 @@ Bool
 TermExpr
     : ID    
     | ID '[' Expression ']' {
-        $$ = getType($1);
+        $$ = $1;
     }
-    | STRING_LIT {
+    | STRING_LIT {        
         printf("STRING_LIT %s\n", $1);
+        $$ = "string";
     }
     | Num
     | Bracket
@@ -358,6 +360,7 @@ Num
 ID
     : IDENT {        
         printf("IDENT (name=%s, address=%d)\n", $1, lookup_symbol($1));
+        $$ = getType($1);
     }
 ;
 
