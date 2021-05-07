@@ -256,10 +256,12 @@ ArithmeticExpr
 ;
 
 ConversionExpr
-    : INT '(' IDENT ')'     {;}
-    | FLOAT '(' IDENT ')'   {;}
-    | INT '(' Num ')'       {;}
-    | FLOAT '(' Num ')'     {;}
+    : '(' INT ')' TermExpr {
+        printf("F to I\n");
+    }
+    | '(' FLOAT ')' TermExpr {        
+        printf("I to F\n");
+    }
 ;
 
 BoolExpr
@@ -313,14 +315,14 @@ Bool
 ;
 
 TermExpr
-    : ID
+    : ID    
     | ID '[' Expression ']' {
         $$ = getType($1);
     }
     | STRING_LIT {
         printf("STRING_LIT %s\n", $1);
     }
-    | Num 
+    | Num
     | Bracket
     | Bool {
         $$ = "bool";

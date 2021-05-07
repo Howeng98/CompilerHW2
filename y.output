@@ -1,9 +1,9 @@
 State 30 conflicts: 2 shift/reduce
 State 38 conflicts: 2 shift/reduce
-State 49 conflicts: 2 shift/reduce
-State 89 conflicts: 1 shift/reduce
-State 120 conflicts: 2 shift/reduce
-State 125 conflicts: 22 reduce/reduce
+State 45 conflicts: 2 shift/reduce
+State 84 conflicts: 1 shift/reduce
+State 113 conflicts: 2 shift/reduce
+State 121 conflicts: 22 reduce/reduce
 
 
 Grammar
@@ -63,98 +63,96 @@ Grammar
    40               | Expression QUO Expression
    41               | Expression REM Expression
 
-   42 ConversionExpr: INT '(' IDENT ')'
-   43               | FLOAT '(' IDENT ')'
-   44               | INT '(' Num ')'
-   45               | FLOAT '(' Num ')'
+   42 ConversionExpr: '(' INT ')' TermExpr
+   43               | '(' FLOAT ')' TermExpr
 
-   46 BoolExpr: LogicalExpr
-   47         | CompareExpr
+   44 BoolExpr: LogicalExpr
+   45         | CompareExpr
 
-   48 LogicalExpr: Expression LOR Expression
-   49            | Expression LAND Expression
+   46 LogicalExpr: Expression LOR Expression
+   47            | Expression LAND Expression
 
-   50 CompareExpr: Expression GTR Expression
-   51            | Expression LST Expression
-   52            | Expression GEQ Expression
-   53            | Expression LEQ Expression
-   54            | Expression EQL Expression
-   55            | Expression NEQ Expression
+   48 CompareExpr: Expression GTR Expression
+   49            | Expression LST Expression
+   50            | Expression GEQ Expression
+   51            | Expression LEQ Expression
+   52            | Expression EQL Expression
+   53            | Expression NEQ Expression
 
-   56 Bool: TRUE
-   57     | FALSE
+   54 Bool: TRUE
+   55     | FALSE
 
-   58 TermExpr: ID
-   59         | ID '[' Expression ']'
-   60         | STRING_LIT
-   61         | Num
-   62         | Bracket
-   63         | Bool
-   64         | TermExpr INC
-   65         | TermExpr DEC
-   66         | ADD Num
-   67         | SUB Num
-   68         | NOT Expression
+   56 TermExpr: ID
+   57         | ID '[' Expression ']'
+   58         | STRING_LIT
+   59         | Num
+   60         | Bracket
+   61         | Bool
+   62         | TermExpr INC
+   63         | TermExpr DEC
+   64         | ADD Num
+   65         | SUB Num
+   66         | NOT Expression
 
-   69 Num: INT_LIT
-   70    | FLOAT_LIT
+   67 Num: INT_LIT
+   68    | FLOAT_LIT
 
-   71 ID: IDENT
+   69 ID: IDENT
 
-   72 Bracket: '(' Expression ')'
-   73        | '{'
-   74        | '}'
+   70 Bracket: '(' Expression ')'
+   71        | '{'
+   72        | '}'
 
 
 Terminals, with rules where they appear
 
     $end (0) 0
-    '(' (40) 11 42 43 44 45 72
-    ')' (41) 11 42 43 44 45 72
+    '(' (40) 11 42 43 70
+    ')' (41) 11 42 43 70
     ';' (59) 17
-    '[' (91) 19 31 59
-    ']' (93) 19 31 59
-    '{' (123) 17 73
-    '}' (125) 74
+    '[' (91) 19 31 57
+    ']' (93) 19 31 57
+    '{' (123) 17 71
+    '}' (125) 72
     error (256)
-    ADD (258) 37 66
-    SUB (259) 38 67
+    ADD (258) 37 64
+    SUB (259) 38 65
     MUL (260) 39
     QUO (261) 40
     REM (262) 41
-    INT (263) 21 42 44
-    FLOAT (264) 22 43 45
+    INT (263) 21 42
+    FLOAT (264) 22 43
     BOOL (265) 24
     STRING (266) 23
-    INC (267) 64
-    DEC (268) 65
-    GEQ (269) 52
-    LEQ (270) 53
-    EQL (271) 54
-    NEQ (272) 55
-    LST (273) 51
-    GTR (274) 50
+    INC (267) 62
+    DEC (268) 63
+    GEQ (269) 50
+    LEQ (270) 51
+    EQL (271) 52
+    NEQ (272) 53
+    LST (273) 49
+    GTR (274) 48
     ASSIGN (275) 20 30 31
     ADD_ASSIGN (276) 32
     SUB_ASSIGN (277) 33
     MUL_ASSIGN (278) 34
     QUO_ASSIGN (279) 35
     REM_ASSIGN (280) 36
-    LAND (281) 49
-    LOR (282) 48
-    NOT (283) 68
+    LAND (281) 47
+    LOR (282) 46
+    NOT (283) 66
     SEMICOLON (284) 2 3
     IF (285) 12
     ELSE (286) 13
     WHILE (287) 15
     FOR (288) 14
     PRINT (289) 10 11
-    TRUE (290) 56
-    FALSE (291) 57
-    INT_LIT <i_val> (292) 69
-    FLOAT_LIT <f_val> (293) 70
-    STRING_LIT <s_val> (294) 60
-    IDENT <id> (295) 18 19 20 42 43 71
+    TRUE (290) 54
+    FALSE (291) 55
+    INT_LIT <i_val> (292) 67
+    FLOAT_LIT <f_val> (293) 68
+    STRING_LIT <s_val> (294) 58
+    IDENT <id> (295) 18 19 20 69
 
 
 Nonterminals, with rules where they appear
@@ -190,7 +188,7 @@ Nonterminals, with rules where they appear
         on right: 18 19 20
     Expression <type> (58)
         on left: 25 26 27 28 29
-        on right: 8 12 15 16 17 19 20 30 31 32 33 34 35 36 37 38 39 40 41 48 49 50 51 52 53 54 55 59 68 72
+        on right: 8 12 15 16 17 19 20 30 31 32 33 34 35 36 37 38 39 40 41 46 47 48 49 50 51 52 53 57 66 70
     AssignmentExpr <type> (59)
         on left: 30 31 32 33 34 35 36
         on right: 25
@@ -198,32 +196,32 @@ Nonterminals, with rules where they appear
         on left: 37 38 39 40 41
         on right: 26
     ConversionExpr <type> (61)
-        on left: 42 43 44 45
+        on left: 42 43
         on right: 27
     BoolExpr <type> (62)
-        on left: 46 47
+        on left: 44 45
         on right: 29
     LogicalExpr <boool> (63)
-        on left: 48 49
-        on right: 46
+        on left: 46 47
+        on right: 44
     CompareExpr <boool> (64)
-        on left: 50 51 52 53 54 55
-        on right: 47
+        on left: 48 49 50 51 52 53
+        on right: 45
     Bool <type> (65)
-        on left: 56 57
-        on right: 63
+        on left: 54 55
+        on right: 61
     TermExpr <type> (66)
-        on left: 58 59 60 61 62 63 64 65 66 67 68
-        on right: 28 64 65
+        on left: 56 57 58 59 60 61 62 63 64 65 66
+        on right: 28 42 43 62 63
     Num <type> (67)
-        on left: 69 70
-        on right: 44 45 61 66 67
+        on left: 67 68
+        on right: 59 64 65
     ID <id> (68)
-        on left: 71
-        on right: 11 30 31 58 59
+        on left: 69
+        on right: 11 30 31 56 57
     Bracket <type> (69)
-        on left: 72 73 74
-        on right: 10 15 16 62
+        on left: 70 71 72
+        on right: 10 15 16 60
 
 
 State 0
@@ -276,7 +274,7 @@ State 0
 
 State 1
 
-   66 TermExpr: ADD . Num
+   64 TermExpr: ADD . Num
 
     INT_LIT    shift, and go to state 18
     FLOAT_LIT  shift, and go to state 19
@@ -286,7 +284,7 @@ State 1
 
 State 2
 
-   67 TermExpr: SUB . Num
+   65 TermExpr: SUB . Num
 
     INT_LIT    shift, and go to state 18
     FLOAT_LIT  shift, and go to state 19
@@ -297,10 +295,6 @@ State 2
 State 3
 
    21 Type: INT .
-   42 ConversionExpr: INT . '(' IDENT ')'
-   44               | INT . '(' Num ')'
-
-    '('  shift, and go to state 44
 
     $default  reduce using rule 21 (Type)
 
@@ -308,10 +302,6 @@ State 3
 State 4
 
    22 Type: FLOAT .
-   43 ConversionExpr: FLOAT . '(' IDENT ')'
-   45               | FLOAT . '(' Num ')'
-
-    '('  shift, and go to state 45
 
     $default  reduce using rule 22 (Type)
 
@@ -332,12 +322,10 @@ State 6
 
 State 7
 
-   68 TermExpr: NOT . Expression
+   66 TermExpr: NOT . Expression
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -349,7 +337,7 @@ State 7
     STRING_LIT  shift, and go to state 20
     IDENT       shift, and go to state 21
 
-    Expression      go to state 48
+    Expression      go to state 44
     AssignmentExpr  go to state 31
     ArithmeticExpr  go to state 32
     ConversionExpr  go to state 33
@@ -369,8 +357,6 @@ State 8
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -382,7 +368,7 @@ State 8
     STRING_LIT  shift, and go to state 20
     IDENT       shift, and go to state 21
 
-    Expression      go to state 49
+    Expression      go to state 45
     AssignmentExpr  go to state 31
     ArithmeticExpr  go to state 32
     ConversionExpr  go to state 33
@@ -409,8 +395,6 @@ State 10
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -422,7 +406,7 @@ State 10
     STRING_LIT  shift, and go to state 20
     IDENT       shift, and go to state 21
 
-    Expression      go to state 50
+    Expression      go to state 46
     AssignmentExpr  go to state 31
     ArithmeticExpr  go to state 32
     ConversionExpr  go to state 33
@@ -442,8 +426,6 @@ State 11
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -455,8 +437,8 @@ State 11
     STRING_LIT  shift, and go to state 20
     IDENT       shift, and go to state 21
 
-    LoopCondition   go to state 51
-    Expression      go to state 52
+    LoopCondition   go to state 47
+    Expression      go to state 48
     AssignmentExpr  go to state 31
     ArithmeticExpr  go to state 32
     ConversionExpr  go to state 33
@@ -477,47 +459,49 @@ State 12
 
     '{'  shift, and go to state 15
     '}'  shift, and go to state 16
-    '('  shift, and go to state 53
+    '('  shift, and go to state 49
 
-    Bracket  go to state 54
+    Bracket  go to state 50
 
 
 State 13
 
-   56 Bool: TRUE .
+   54 Bool: TRUE .
 
-    $default  reduce using rule 56 (Bool)
+    $default  reduce using rule 54 (Bool)
 
 
 State 14
 
-   57 Bool: FALSE .
+   55 Bool: FALSE .
 
-    $default  reduce using rule 57 (Bool)
+    $default  reduce using rule 55 (Bool)
 
 
 State 15
 
-   73 Bracket: '{' .
+   71 Bracket: '{' .
 
-    $default  reduce using rule 73 (Bracket)
+    $default  reduce using rule 71 (Bracket)
 
 
 State 16
 
-   74 Bracket: '}' .
+   72 Bracket: '}' .
 
-    $default  reduce using rule 74 (Bracket)
+    $default  reduce using rule 72 (Bracket)
 
 
 State 17
 
-   72 Bracket: '(' . Expression ')'
+   42 ConversionExpr: '(' . INT ')' TermExpr
+   43               | '(' . FLOAT ')' TermExpr
+   70 Bracket: '(' . Expression ')'
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
+    INT         shift, and go to state 51
+    FLOAT       shift, and go to state 52
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -529,7 +513,7 @@ State 17
     STRING_LIT  shift, and go to state 20
     IDENT       shift, and go to state 21
 
-    Expression      go to state 55
+    Expression      go to state 53
     AssignmentExpr  go to state 31
     ArithmeticExpr  go to state 32
     ConversionExpr  go to state 33
@@ -545,37 +529,37 @@ State 17
 
 State 18
 
-   69 Num: INT_LIT .
+   67 Num: INT_LIT .
 
-    $default  reduce using rule 69 (Num)
+    $default  reduce using rule 67 (Num)
 
 
 State 19
 
-   70 Num: FLOAT_LIT .
+   68 Num: FLOAT_LIT .
 
-    $default  reduce using rule 70 (Num)
+    $default  reduce using rule 68 (Num)
 
 
 State 20
 
-   60 TermExpr: STRING_LIT .
+   58 TermExpr: STRING_LIT .
 
-    $default  reduce using rule 60 (TermExpr)
+    $default  reduce using rule 58 (TermExpr)
 
 
 State 21
 
-   71 ID: IDENT .
+   69 ID: IDENT .
 
-    $default  reduce using rule 71 (ID)
+    $default  reduce using rule 69 (ID)
 
 
 State 22
 
     0 $accept: Program . $end
 
-    $end  shift, and go to state 56
+    $end  shift, and go to state 54
 
 
 State 23
@@ -608,7 +592,7 @@ State 23
 
     $default  reduce using rule 1 (Program)
 
-    Statement        go to state 57
+    Statement        go to state 55
     PrintStmt        go to state 25
     IfStmt           go to state 26
     LoopStmt         go to state 27
@@ -632,7 +616,7 @@ State 24
 
     3 StatementList: Statement . SEMICOLON
 
-    SEMICOLON  shift, and go to state 58
+    SEMICOLON  shift, and go to state 56
 
 
 State 25
@@ -669,7 +653,7 @@ State 29
    19                | Type . IDENT '[' Expression ']'
    20                | Type . IDENT ASSIGN Expression
 
-    IDENT  shift, and go to state 59
+    IDENT  shift, and go to state 57
 
 
 State 30
@@ -685,33 +669,33 @@ State 30
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    GEQ         shift, and go to state 65
-    LEQ         shift, and go to state 66
-    EQL         shift, and go to state 67
-    NEQ         shift, and go to state 68
-    LST         shift, and go to state 69
-    GTR         shift, and go to state 70
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
-    LAND        shift, and go to state 76
-    LOR         shift, and go to state 77
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    GEQ         shift, and go to state 63
+    LEQ         shift, and go to state 64
+    EQL         shift, and go to state 65
+    NEQ         shift, and go to state 66
+    LST         shift, and go to state 67
+    GTR         shift, and go to state 68
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
+    LAND        shift, and go to state 74
+    LOR         shift, and go to state 75
 
     ADD       [reduce using rule 8 (Statement)]
     SUB       [reduce using rule 8 (Statement)]
@@ -748,33 +732,33 @@ State 34
 
 State 35
 
-   46 BoolExpr: LogicalExpr .
+   44 BoolExpr: LogicalExpr .
 
-    $default  reduce using rule 46 (BoolExpr)
+    $default  reduce using rule 44 (BoolExpr)
 
 
 State 36
 
-   47 BoolExpr: CompareExpr .
+   45 BoolExpr: CompareExpr .
 
-    $default  reduce using rule 47 (BoolExpr)
+    $default  reduce using rule 45 (BoolExpr)
 
 
 State 37
 
-   63 TermExpr: Bool .
+   61 TermExpr: Bool .
 
-    $default  reduce using rule 63 (TermExpr)
+    $default  reduce using rule 61 (TermExpr)
 
 
 State 38
 
    28 Expression: TermExpr .
-   64 TermExpr: TermExpr . INC
-   65         | TermExpr . DEC
+   62 TermExpr: TermExpr . INC
+   63         | TermExpr . DEC
 
-    INC  shift, and go to state 78
-    DEC  shift, and go to state 79
+    INC  shift, and go to state 76
+    DEC  shift, and go to state 77
 
     INC       [reduce using rule 28 (Expression)]
     DEC       [reduce using rule 28 (Expression)]
@@ -783,86 +767,46 @@ State 38
 
 State 39
 
-   61 TermExpr: Num .
+   59 TermExpr: Num .
 
-    $default  reduce using rule 61 (TermExpr)
+    $default  reduce using rule 59 (TermExpr)
 
 
 State 40
 
    30 AssignmentExpr: ID . ASSIGN Expression
    31               | ID . '[' Expression ']' ASSIGN Expression
-   58 TermExpr: ID .
-   59         | ID . '[' Expression ']'
+   56 TermExpr: ID .
+   57         | ID . '[' Expression ']'
 
-    ASSIGN  shift, and go to state 80
-    '['     shift, and go to state 81
+    ASSIGN  shift, and go to state 78
+    '['     shift, and go to state 79
 
-    $default  reduce using rule 58 (TermExpr)
+    $default  reduce using rule 56 (TermExpr)
 
 
 State 41
 
-   62 TermExpr: Bracket .
+   60 TermExpr: Bracket .
 
-    $default  reduce using rule 62 (TermExpr)
+    $default  reduce using rule 60 (TermExpr)
 
 
 State 42
 
-   66 TermExpr: ADD Num .
+   64 TermExpr: ADD Num .
 
-    $default  reduce using rule 66 (TermExpr)
+    $default  reduce using rule 64 (TermExpr)
 
 
 State 43
 
-   67 TermExpr: SUB Num .
+   65 TermExpr: SUB Num .
 
-    $default  reduce using rule 67 (TermExpr)
+    $default  reduce using rule 65 (TermExpr)
 
 
 State 44
-
-   42 ConversionExpr: INT '(' . IDENT ')'
-   44               | INT '(' . Num ')'
-
-    INT_LIT    shift, and go to state 18
-    FLOAT_LIT  shift, and go to state 19
-    IDENT      shift, and go to state 82
-
-    Num  go to state 83
-
-
-State 45
-
-   43 ConversionExpr: FLOAT '(' . IDENT ')'
-   45               | FLOAT '(' . Num ')'
-
-    INT_LIT    shift, and go to state 18
-    FLOAT_LIT  shift, and go to state 19
-    IDENT      shift, and go to state 84
-
-    Num  go to state 85
-
-
-State 46
-
-   42 ConversionExpr: INT . '(' IDENT ')'
-   44               | INT . '(' Num ')'
-
-    '('  shift, and go to state 44
-
-
-State 47
-
-   43 ConversionExpr: FLOAT . '(' IDENT ')'
-   45               | FLOAT . '(' Num ')'
-
-    '('  shift, and go to state 45
-
-
-State 48
 
    32 AssignmentExpr: Expression . ADD_ASSIGN Expression
    33               | Expression . SUB_ASSIGN Expression
@@ -874,20 +818,20 @@ State 48
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
-   68 TermExpr: NOT Expression .
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
+   66 TermExpr: NOT Expression .
 
-    $default  reduce using rule 68 (TermExpr)
+    $default  reduce using rule 66 (TermExpr)
 
 
-State 49
+State 45
 
    12 IfStmt: IF Expression .
    32 AssignmentExpr: Expression . ADD_ASSIGN Expression
@@ -900,40 +844,40 @@ State 49
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    GEQ         shift, and go to state 65
-    LEQ         shift, and go to state 66
-    EQL         shift, and go to state 67
-    NEQ         shift, and go to state 68
-    LST         shift, and go to state 69
-    GTR         shift, and go to state 70
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
-    LAND        shift, and go to state 76
-    LOR         shift, and go to state 77
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    GEQ         shift, and go to state 63
+    LEQ         shift, and go to state 64
+    EQL         shift, and go to state 65
+    NEQ         shift, and go to state 66
+    LST         shift, and go to state 67
+    GTR         shift, and go to state 68
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
+    LAND        shift, and go to state 74
+    LOR         shift, and go to state 75
 
     ADD       [reduce using rule 12 (IfStmt)]
     SUB       [reduce using rule 12 (IfStmt)]
     $default  reduce using rule 12 (IfStmt)
 
 
-State 50
+State 46
 
    15 LoopStmt: WHILE Expression . Bracket StatementList Bracket
    32 AssignmentExpr: Expression . ADD_ASSIGN Expression
@@ -946,48 +890,48 @@ State 50
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    GEQ         shift, and go to state 65
-    LEQ         shift, and go to state 66
-    EQL         shift, and go to state 67
-    NEQ         shift, and go to state 68
-    LST         shift, and go to state 69
-    GTR         shift, and go to state 70
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
-    LAND        shift, and go to state 76
-    LOR         shift, and go to state 77
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    GEQ         shift, and go to state 63
+    LEQ         shift, and go to state 64
+    EQL         shift, and go to state 65
+    NEQ         shift, and go to state 66
+    LST         shift, and go to state 67
+    GTR         shift, and go to state 68
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
+    LAND        shift, and go to state 74
+    LOR         shift, and go to state 75
     '{'         shift, and go to state 15
     '}'         shift, and go to state 16
-    '('         shift, and go to state 17
+    '('         shift, and go to state 80
 
-    Bracket  go to state 86
+    Bracket  go to state 81
 
 
-State 51
+State 47
 
    14 LoopStmt: FOR LoopCondition .
 
     $default  reduce using rule 14 (LoopStmt)
 
 
-State 52
+State 48
 
    16 LoopCondition: Expression . Bracket Expression
    17              | Expression . ';' Expression ';' Expression '{'
@@ -1001,50 +945,48 @@ State 52
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    GEQ         shift, and go to state 65
-    LEQ         shift, and go to state 66
-    EQL         shift, and go to state 67
-    NEQ         shift, and go to state 68
-    LST         shift, and go to state 69
-    GTR         shift, and go to state 70
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
-    LAND        shift, and go to state 76
-    LOR         shift, and go to state 77
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    GEQ         shift, and go to state 63
+    LEQ         shift, and go to state 64
+    EQL         shift, and go to state 65
+    NEQ         shift, and go to state 66
+    LST         shift, and go to state 67
+    GTR         shift, and go to state 68
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
+    LAND        shift, and go to state 74
+    LOR         shift, and go to state 75
     '{'         shift, and go to state 15
     '}'         shift, and go to state 16
-    '('         shift, and go to state 17
-    ';'         shift, and go to state 87
+    '('         shift, and go to state 80
+    ';'         shift, and go to state 82
 
-    Bracket  go to state 88
+    Bracket  go to state 83
 
 
-State 53
+State 49
 
    11 PrintStmt: PRINT '(' . ID ')'
-   72 Bracket: '(' . Expression ')'
+   70 Bracket: '(' . Expression ')'
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -1056,7 +998,7 @@ State 53
     STRING_LIT  shift, and go to state 20
     IDENT       shift, and go to state 21
 
-    Expression      go to state 55
+    Expression      go to state 53
     AssignmentExpr  go to state 31
     ArithmeticExpr  go to state 32
     ConversionExpr  go to state 33
@@ -1066,18 +1008,32 @@ State 53
     Bool            go to state 37
     TermExpr        go to state 38
     Num             go to state 39
-    ID              go to state 89
+    ID              go to state 84
     Bracket         go to state 41
 
 
-State 54
+State 50
 
    10 PrintStmt: PRINT Bracket .
 
     $default  reduce using rule 10 (PrintStmt)
 
 
-State 55
+State 51
+
+   42 ConversionExpr: '(' INT . ')' TermExpr
+
+    ')'  shift, and go to state 85
+
+
+State 52
+
+   43 ConversionExpr: '(' FLOAT . ')' TermExpr
+
+    ')'  shift, and go to state 86
+
+
+State 53
 
    32 AssignmentExpr: Expression . ADD_ASSIGN Expression
    33               | Expression . SUB_ASSIGN Expression
@@ -1089,81 +1045,172 @@ State 55
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
-   72 Bracket: '(' Expression . ')'
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
+   70 Bracket: '(' Expression . ')'
 
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    GEQ         shift, and go to state 65
-    LEQ         shift, and go to state 66
-    EQL         shift, and go to state 67
-    NEQ         shift, and go to state 68
-    LST         shift, and go to state 69
-    GTR         shift, and go to state 70
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
-    LAND        shift, and go to state 76
-    LOR         shift, and go to state 77
-    ')'         shift, and go to state 90
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    GEQ         shift, and go to state 63
+    LEQ         shift, and go to state 64
+    EQL         shift, and go to state 65
+    NEQ         shift, and go to state 66
+    LST         shift, and go to state 67
+    GTR         shift, and go to state 68
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
+    LAND        shift, and go to state 74
+    LOR         shift, and go to state 75
+    ')'         shift, and go to state 87
 
 
-State 56
+State 54
 
     0 $accept: Program $end .
 
     $default  accept
 
 
-State 57
+State 55
 
     2 StatementList: StatementList Statement . SEMICOLON
     4              | StatementList Statement .
 
-    SEMICOLON  shift, and go to state 91
+    SEMICOLON  shift, and go to state 88
 
     $default  reduce using rule 4 (StatementList)
 
 
-State 58
+State 56
 
     3 StatementList: Statement SEMICOLON .
 
     $default  reduce using rule 3 (StatementList)
 
 
-State 59
+State 57
 
    18 DeclarationStmt: Type IDENT .
    19                | Type IDENT . '[' Expression ']'
    20                | Type IDENT . ASSIGN Expression
 
-    ASSIGN  shift, and go to state 92
-    '['     shift, and go to state 93
+    ASSIGN  shift, and go to state 89
+    '['     shift, and go to state 90
 
     $default  reduce using rule 18 (DeclarationStmt)
 
 
-State 60
+State 58
 
    37 ArithmeticExpr: Expression ADD . Expression
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
+    NOT         shift, and go to state 7
+    TRUE        shift, and go to state 13
+    FALSE       shift, and go to state 14
+    '{'         shift, and go to state 15
+    '}'         shift, and go to state 16
+    '('         shift, and go to state 17
+    INT_LIT     shift, and go to state 18
+    FLOAT_LIT   shift, and go to state 19
+    STRING_LIT  shift, and go to state 20
+    IDENT       shift, and go to state 21
+
+    Expression      go to state 91
+    AssignmentExpr  go to state 31
+    ArithmeticExpr  go to state 32
+    ConversionExpr  go to state 33
+    BoolExpr        go to state 34
+    LogicalExpr     go to state 35
+    CompareExpr     go to state 36
+    Bool            go to state 37
+    TermExpr        go to state 38
+    Num             go to state 39
+    ID              go to state 40
+    Bracket         go to state 41
+
+
+State 59
+
+   38 ArithmeticExpr: Expression SUB . Expression
+
+    ADD         shift, and go to state 1
+    SUB         shift, and go to state 2
+    NOT         shift, and go to state 7
+    TRUE        shift, and go to state 13
+    FALSE       shift, and go to state 14
+    '{'         shift, and go to state 15
+    '}'         shift, and go to state 16
+    '('         shift, and go to state 17
+    INT_LIT     shift, and go to state 18
+    FLOAT_LIT   shift, and go to state 19
+    STRING_LIT  shift, and go to state 20
+    IDENT       shift, and go to state 21
+
+    Expression      go to state 92
+    AssignmentExpr  go to state 31
+    ArithmeticExpr  go to state 32
+    ConversionExpr  go to state 33
+    BoolExpr        go to state 34
+    LogicalExpr     go to state 35
+    CompareExpr     go to state 36
+    Bool            go to state 37
+    TermExpr        go to state 38
+    Num             go to state 39
+    ID              go to state 40
+    Bracket         go to state 41
+
+
+State 60
+
+   39 ArithmeticExpr: Expression MUL . Expression
+
+    ADD         shift, and go to state 1
+    SUB         shift, and go to state 2
+    NOT         shift, and go to state 7
+    TRUE        shift, and go to state 13
+    FALSE       shift, and go to state 14
+    '{'         shift, and go to state 15
+    '}'         shift, and go to state 16
+    '('         shift, and go to state 17
+    INT_LIT     shift, and go to state 18
+    FLOAT_LIT   shift, and go to state 19
+    STRING_LIT  shift, and go to state 20
+    IDENT       shift, and go to state 21
+
+    Expression      go to state 93
+    AssignmentExpr  go to state 31
+    ArithmeticExpr  go to state 32
+    ConversionExpr  go to state 33
+    BoolExpr        go to state 34
+    LogicalExpr     go to state 35
+    CompareExpr     go to state 36
+    Bool            go to state 37
+    TermExpr        go to state 38
+    Num             go to state 39
+    ID              go to state 40
+    Bracket         go to state 41
+
+
+State 61
+
+   40 ArithmeticExpr: Expression QUO . Expression
+
+    ADD         shift, and go to state 1
+    SUB         shift, and go to state 2
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -1189,14 +1236,12 @@ State 60
     Bracket         go to state 41
 
 
-State 61
+State 62
 
-   38 ArithmeticExpr: Expression SUB . Expression
+   41 ArithmeticExpr: Expression REM . Expression
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -1222,14 +1267,12 @@ State 61
     Bracket         go to state 41
 
 
-State 62
+State 63
 
-   39 ArithmeticExpr: Expression MUL . Expression
+   50 CompareExpr: Expression GEQ . Expression
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -1255,14 +1298,12 @@ State 62
     Bracket         go to state 41
 
 
-State 63
+State 64
 
-   40 ArithmeticExpr: Expression QUO . Expression
+   51 CompareExpr: Expression LEQ . Expression
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -1288,14 +1329,12 @@ State 63
     Bracket         go to state 41
 
 
-State 64
+State 65
 
-   41 ArithmeticExpr: Expression REM . Expression
+   52 CompareExpr: Expression EQL . Expression
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -1321,14 +1360,12 @@ State 64
     Bracket         go to state 41
 
 
-State 65
+State 66
 
-   52 CompareExpr: Expression GEQ . Expression
+   53 CompareExpr: Expression NEQ . Expression
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -1354,14 +1391,12 @@ State 65
     Bracket         go to state 41
 
 
-State 66
+State 67
 
-   53 CompareExpr: Expression LEQ . Expression
+   49 CompareExpr: Expression LST . Expression
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -1387,14 +1422,12 @@ State 66
     Bracket         go to state 41
 
 
-State 67
+State 68
 
-   54 CompareExpr: Expression EQL . Expression
+   48 CompareExpr: Expression GTR . Expression
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -1420,14 +1453,12 @@ State 67
     Bracket         go to state 41
 
 
-State 68
+State 69
 
-   55 CompareExpr: Expression NEQ . Expression
+   32 AssignmentExpr: Expression ADD_ASSIGN . Expression
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -1453,14 +1484,12 @@ State 68
     Bracket         go to state 41
 
 
-State 69
+State 70
 
-   51 CompareExpr: Expression LST . Expression
+   33 AssignmentExpr: Expression SUB_ASSIGN . Expression
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -1486,14 +1515,12 @@ State 69
     Bracket         go to state 41
 
 
-State 70
+State 71
 
-   50 CompareExpr: Expression GTR . Expression
+   34 AssignmentExpr: Expression MUL_ASSIGN . Expression
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -1519,14 +1546,12 @@ State 70
     Bracket         go to state 41
 
 
-State 71
+State 72
 
-   32 AssignmentExpr: Expression ADD_ASSIGN . Expression
+   35 AssignmentExpr: Expression QUO_ASSIGN . Expression
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -1552,14 +1577,12 @@ State 71
     Bracket         go to state 41
 
 
-State 72
+State 73
 
-   33 AssignmentExpr: Expression SUB_ASSIGN . Expression
+   36 AssignmentExpr: Expression REM_ASSIGN . Expression
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -1585,14 +1608,12 @@ State 72
     Bracket         go to state 41
 
 
-State 73
+State 74
 
-   34 AssignmentExpr: Expression MUL_ASSIGN . Expression
+   47 LogicalExpr: Expression LAND . Expression
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -1618,14 +1639,12 @@ State 73
     Bracket         go to state 41
 
 
-State 74
+State 75
 
-   35 AssignmentExpr: Expression QUO_ASSIGN . Expression
+   46 LogicalExpr: Expression LOR . Expression
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -1651,14 +1670,26 @@ State 74
     Bracket         go to state 41
 
 
-State 75
+State 76
 
-   36 AssignmentExpr: Expression REM_ASSIGN . Expression
+   62 TermExpr: TermExpr INC .
+
+    $default  reduce using rule 62 (TermExpr)
+
+
+State 77
+
+   63 TermExpr: TermExpr DEC .
+
+    $default  reduce using rule 63 (TermExpr)
+
+
+State 78
+
+   30 AssignmentExpr: ID ASSIGN . Expression
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -1684,14 +1715,13 @@ State 75
     Bracket         go to state 41
 
 
-State 76
+State 79
 
-   49 LogicalExpr: Expression LAND . Expression
+   31 AssignmentExpr: ID '[' . Expression ']' ASSIGN Expression
+   57 TermExpr: ID '[' . Expression ']'
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -1717,61 +1747,12 @@ State 76
     Bracket         go to state 41
 
 
-State 77
-
-   48 LogicalExpr: Expression LOR . Expression
-
-    ADD         shift, and go to state 1
-    SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
-    NOT         shift, and go to state 7
-    TRUE        shift, and go to state 13
-    FALSE       shift, and go to state 14
-    '{'         shift, and go to state 15
-    '}'         shift, and go to state 16
-    '('         shift, and go to state 17
-    INT_LIT     shift, and go to state 18
-    FLOAT_LIT   shift, and go to state 19
-    STRING_LIT  shift, and go to state 20
-    IDENT       shift, and go to state 21
-
-    Expression      go to state 111
-    AssignmentExpr  go to state 31
-    ArithmeticExpr  go to state 32
-    ConversionExpr  go to state 33
-    BoolExpr        go to state 34
-    LogicalExpr     go to state 35
-    CompareExpr     go to state 36
-    Bool            go to state 37
-    TermExpr        go to state 38
-    Num             go to state 39
-    ID              go to state 40
-    Bracket         go to state 41
-
-
-State 78
-
-   64 TermExpr: TermExpr INC .
-
-    $default  reduce using rule 64 (TermExpr)
-
-
-State 79
-
-   65 TermExpr: TermExpr DEC .
-
-    $default  reduce using rule 65 (TermExpr)
-
-
 State 80
 
-   30 AssignmentExpr: ID ASSIGN . Expression
+   70 Bracket: '(' . Expression ')'
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -1783,7 +1764,7 @@ State 80
     STRING_LIT  shift, and go to state 20
     IDENT       shift, and go to state 21
 
-    Expression      go to state 112
+    Expression      go to state 53
     AssignmentExpr  go to state 31
     ArithmeticExpr  go to state 32
     ConversionExpr  go to state 33
@@ -1798,68 +1779,6 @@ State 80
 
 
 State 81
-
-   31 AssignmentExpr: ID '[' . Expression ']' ASSIGN Expression
-   59 TermExpr: ID '[' . Expression ']'
-
-    ADD         shift, and go to state 1
-    SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
-    NOT         shift, and go to state 7
-    TRUE        shift, and go to state 13
-    FALSE       shift, and go to state 14
-    '{'         shift, and go to state 15
-    '}'         shift, and go to state 16
-    '('         shift, and go to state 17
-    INT_LIT     shift, and go to state 18
-    FLOAT_LIT   shift, and go to state 19
-    STRING_LIT  shift, and go to state 20
-    IDENT       shift, and go to state 21
-
-    Expression      go to state 113
-    AssignmentExpr  go to state 31
-    ArithmeticExpr  go to state 32
-    ConversionExpr  go to state 33
-    BoolExpr        go to state 34
-    LogicalExpr     go to state 35
-    CompareExpr     go to state 36
-    Bool            go to state 37
-    TermExpr        go to state 38
-    Num             go to state 39
-    ID              go to state 40
-    Bracket         go to state 41
-
-
-State 82
-
-   42 ConversionExpr: INT '(' IDENT . ')'
-
-    ')'  shift, and go to state 114
-
-
-State 83
-
-   44 ConversionExpr: INT '(' Num . ')'
-
-    ')'  shift, and go to state 115
-
-
-State 84
-
-   43 ConversionExpr: FLOAT '(' IDENT . ')'
-
-    ')'  shift, and go to state 116
-
-
-State 85
-
-   45 ConversionExpr: FLOAT '(' Num . ')'
-
-    ')'  shift, and go to state 117
-
-
-State 86
 
    15 LoopStmt: WHILE Expression Bracket . StatementList Bracket
 
@@ -1885,7 +1804,7 @@ State 86
     STRING_LIT  shift, and go to state 20
     IDENT       shift, and go to state 21
 
-    StatementList    go to state 118
+    StatementList    go to state 111
     Statement        go to state 24
     PrintStmt        go to state 25
     IfStmt           go to state 26
@@ -1906,14 +1825,183 @@ State 86
     Bracket          go to state 41
 
 
-State 87
+State 82
 
    17 LoopCondition: Expression ';' . Expression ';' Expression '{'
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
+    NOT         shift, and go to state 7
+    TRUE        shift, and go to state 13
+    FALSE       shift, and go to state 14
+    '{'         shift, and go to state 15
+    '}'         shift, and go to state 16
+    '('         shift, and go to state 17
+    INT_LIT     shift, and go to state 18
+    FLOAT_LIT   shift, and go to state 19
+    STRING_LIT  shift, and go to state 20
+    IDENT       shift, and go to state 21
+
+    Expression      go to state 112
+    AssignmentExpr  go to state 31
+    ArithmeticExpr  go to state 32
+    ConversionExpr  go to state 33
+    BoolExpr        go to state 34
+    LogicalExpr     go to state 35
+    CompareExpr     go to state 36
+    Bool            go to state 37
+    TermExpr        go to state 38
+    Num             go to state 39
+    ID              go to state 40
+    Bracket         go to state 41
+
+
+State 83
+
+   16 LoopCondition: Expression Bracket . Expression
+
+    ADD         shift, and go to state 1
+    SUB         shift, and go to state 2
+    NOT         shift, and go to state 7
+    TRUE        shift, and go to state 13
+    FALSE       shift, and go to state 14
+    '{'         shift, and go to state 15
+    '}'         shift, and go to state 16
+    '('         shift, and go to state 17
+    INT_LIT     shift, and go to state 18
+    FLOAT_LIT   shift, and go to state 19
+    STRING_LIT  shift, and go to state 20
+    IDENT       shift, and go to state 21
+
+    Expression      go to state 113
+    AssignmentExpr  go to state 31
+    ArithmeticExpr  go to state 32
+    ConversionExpr  go to state 33
+    BoolExpr        go to state 34
+    LogicalExpr     go to state 35
+    CompareExpr     go to state 36
+    Bool            go to state 37
+    TermExpr        go to state 38
+    Num             go to state 39
+    ID              go to state 40
+    Bracket         go to state 41
+
+
+State 84
+
+   11 PrintStmt: PRINT '(' ID . ')'
+   30 AssignmentExpr: ID . ASSIGN Expression
+   31               | ID . '[' Expression ']' ASSIGN Expression
+   56 TermExpr: ID .
+   57         | ID . '[' Expression ']'
+
+    ASSIGN  shift, and go to state 78
+    '['     shift, and go to state 79
+    ')'     shift, and go to state 114
+
+    ')'       [reduce using rule 56 (TermExpr)]
+    $default  reduce using rule 56 (TermExpr)
+
+
+State 85
+
+   42 ConversionExpr: '(' INT ')' . TermExpr
+
+    ADD         shift, and go to state 1
+    SUB         shift, and go to state 2
+    NOT         shift, and go to state 7
+    TRUE        shift, and go to state 13
+    FALSE       shift, and go to state 14
+    '{'         shift, and go to state 15
+    '}'         shift, and go to state 16
+    '('         shift, and go to state 80
+    INT_LIT     shift, and go to state 18
+    FLOAT_LIT   shift, and go to state 19
+    STRING_LIT  shift, and go to state 20
+    IDENT       shift, and go to state 21
+
+    Bool      go to state 37
+    TermExpr  go to state 115
+    Num       go to state 39
+    ID        go to state 116
+    Bracket   go to state 41
+
+
+State 86
+
+   43 ConversionExpr: '(' FLOAT ')' . TermExpr
+
+    ADD         shift, and go to state 1
+    SUB         shift, and go to state 2
+    NOT         shift, and go to state 7
+    TRUE        shift, and go to state 13
+    FALSE       shift, and go to state 14
+    '{'         shift, and go to state 15
+    '}'         shift, and go to state 16
+    '('         shift, and go to state 80
+    INT_LIT     shift, and go to state 18
+    FLOAT_LIT   shift, and go to state 19
+    STRING_LIT  shift, and go to state 20
+    IDENT       shift, and go to state 21
+
+    Bool      go to state 37
+    TermExpr  go to state 117
+    Num       go to state 39
+    ID        go to state 116
+    Bracket   go to state 41
+
+
+State 87
+
+   70 Bracket: '(' Expression ')' .
+
+    $default  reduce using rule 70 (Bracket)
+
+
+State 88
+
+    2 StatementList: StatementList Statement SEMICOLON .
+
+    $default  reduce using rule 2 (StatementList)
+
+
+State 89
+
+   20 DeclarationStmt: Type IDENT ASSIGN . Expression
+
+    ADD         shift, and go to state 1
+    SUB         shift, and go to state 2
+    NOT         shift, and go to state 7
+    TRUE        shift, and go to state 13
+    FALSE       shift, and go to state 14
+    '{'         shift, and go to state 15
+    '}'         shift, and go to state 16
+    '('         shift, and go to state 17
+    INT_LIT     shift, and go to state 18
+    FLOAT_LIT   shift, and go to state 19
+    STRING_LIT  shift, and go to state 20
+    IDENT       shift, and go to state 21
+
+    Expression      go to state 118
+    AssignmentExpr  go to state 31
+    ArithmeticExpr  go to state 32
+    ConversionExpr  go to state 33
+    BoolExpr        go to state 34
+    LogicalExpr     go to state 35
+    CompareExpr     go to state 36
+    Bool            go to state 37
+    TermExpr        go to state 38
+    Num             go to state 39
+    ID              go to state 40
+    Bracket         go to state 41
+
+
+State 90
+
+   19 DeclarationStmt: Type IDENT '[' . Expression ']'
+
+    ADD         shift, and go to state 1
+    SUB         shift, and go to state 2
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -1939,136 +2027,7 @@ State 87
     Bracket         go to state 41
 
 
-State 88
-
-   16 LoopCondition: Expression Bracket . Expression
-
-    ADD         shift, and go to state 1
-    SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
-    NOT         shift, and go to state 7
-    TRUE        shift, and go to state 13
-    FALSE       shift, and go to state 14
-    '{'         shift, and go to state 15
-    '}'         shift, and go to state 16
-    '('         shift, and go to state 17
-    INT_LIT     shift, and go to state 18
-    FLOAT_LIT   shift, and go to state 19
-    STRING_LIT  shift, and go to state 20
-    IDENT       shift, and go to state 21
-
-    Expression      go to state 120
-    AssignmentExpr  go to state 31
-    ArithmeticExpr  go to state 32
-    ConversionExpr  go to state 33
-    BoolExpr        go to state 34
-    LogicalExpr     go to state 35
-    CompareExpr     go to state 36
-    Bool            go to state 37
-    TermExpr        go to state 38
-    Num             go to state 39
-    ID              go to state 40
-    Bracket         go to state 41
-
-
-State 89
-
-   11 PrintStmt: PRINT '(' ID . ')'
-   30 AssignmentExpr: ID . ASSIGN Expression
-   31               | ID . '[' Expression ']' ASSIGN Expression
-   58 TermExpr: ID .
-   59         | ID . '[' Expression ']'
-
-    ASSIGN  shift, and go to state 80
-    '['     shift, and go to state 81
-    ')'     shift, and go to state 121
-
-    ')'       [reduce using rule 58 (TermExpr)]
-    $default  reduce using rule 58 (TermExpr)
-
-
-State 90
-
-   72 Bracket: '(' Expression ')' .
-
-    $default  reduce using rule 72 (Bracket)
-
-
 State 91
-
-    2 StatementList: StatementList Statement SEMICOLON .
-
-    $default  reduce using rule 2 (StatementList)
-
-
-State 92
-
-   20 DeclarationStmt: Type IDENT ASSIGN . Expression
-
-    ADD         shift, and go to state 1
-    SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
-    NOT         shift, and go to state 7
-    TRUE        shift, and go to state 13
-    FALSE       shift, and go to state 14
-    '{'         shift, and go to state 15
-    '}'         shift, and go to state 16
-    '('         shift, and go to state 17
-    INT_LIT     shift, and go to state 18
-    FLOAT_LIT   shift, and go to state 19
-    STRING_LIT  shift, and go to state 20
-    IDENT       shift, and go to state 21
-
-    Expression      go to state 122
-    AssignmentExpr  go to state 31
-    ArithmeticExpr  go to state 32
-    ConversionExpr  go to state 33
-    BoolExpr        go to state 34
-    LogicalExpr     go to state 35
-    CompareExpr     go to state 36
-    Bool            go to state 37
-    TermExpr        go to state 38
-    Num             go to state 39
-    ID              go to state 40
-    Bracket         go to state 41
-
-
-State 93
-
-   19 DeclarationStmt: Type IDENT '[' . Expression ']'
-
-    ADD         shift, and go to state 1
-    SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
-    NOT         shift, and go to state 7
-    TRUE        shift, and go to state 13
-    FALSE       shift, and go to state 14
-    '{'         shift, and go to state 15
-    '}'         shift, and go to state 16
-    '('         shift, and go to state 17
-    INT_LIT     shift, and go to state 18
-    FLOAT_LIT   shift, and go to state 19
-    STRING_LIT  shift, and go to state 20
-    IDENT       shift, and go to state 21
-
-    Expression      go to state 123
-    AssignmentExpr  go to state 31
-    ArithmeticExpr  go to state 32
-    ConversionExpr  go to state 33
-    BoolExpr        go to state 34
-    LogicalExpr     go to state 35
-    CompareExpr     go to state 36
-    Bool            go to state 37
-    TermExpr        go to state 38
-    Num             go to state 39
-    ID              go to state 40
-    Bracket         go to state 41
-
-
-State 94
 
    32 AssignmentExpr: Expression . ADD_ASSIGN Expression
    33               | Expression . SUB_ASSIGN Expression
@@ -2081,28 +2040,28 @@ State 94
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
 
     $default  reduce using rule 37 (ArithmeticExpr)
 
 
-State 95
+State 92
 
    32 AssignmentExpr: Expression . ADD_ASSIGN Expression
    33               | Expression . SUB_ASSIGN Expression
@@ -2115,28 +2074,28 @@ State 95
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
 
     $default  reduce using rule 38 (ArithmeticExpr)
 
 
-State 96
+State 93
 
    32 AssignmentExpr: Expression . ADD_ASSIGN Expression
    33               | Expression . SUB_ASSIGN Expression
@@ -2149,20 +2108,114 @@ State 96
    39               | Expression MUL Expression .
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
 
     $default  reduce using rule 39 (ArithmeticExpr)
+
+
+State 94
+
+   32 AssignmentExpr: Expression . ADD_ASSIGN Expression
+   33               | Expression . SUB_ASSIGN Expression
+   34               | Expression . MUL_ASSIGN Expression
+   35               | Expression . QUO_ASSIGN Expression
+   36               | Expression . REM_ASSIGN Expression
+   37 ArithmeticExpr: Expression . ADD Expression
+   38               | Expression . SUB Expression
+   39               | Expression . MUL Expression
+   40               | Expression . QUO Expression
+   40               | Expression QUO Expression .
+   41               | Expression . REM Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
+
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
+
+    $default  reduce using rule 40 (ArithmeticExpr)
+
+
+State 95
+
+   32 AssignmentExpr: Expression . ADD_ASSIGN Expression
+   33               | Expression . SUB_ASSIGN Expression
+   34               | Expression . MUL_ASSIGN Expression
+   35               | Expression . QUO_ASSIGN Expression
+   36               | Expression . REM_ASSIGN Expression
+   37 ArithmeticExpr: Expression . ADD Expression
+   38               | Expression . SUB Expression
+   39               | Expression . MUL Expression
+   40               | Expression . QUO Expression
+   41               | Expression . REM Expression
+   41               | Expression REM Expression .
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
+
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
+
+    $default  reduce using rule 41 (ArithmeticExpr)
+
+
+State 96
+
+   32 AssignmentExpr: Expression . ADD_ASSIGN Expression
+   33               | Expression . SUB_ASSIGN Expression
+   34               | Expression . MUL_ASSIGN Expression
+   35               | Expression . QUO_ASSIGN Expression
+   36               | Expression . REM_ASSIGN Expression
+   37 ArithmeticExpr: Expression . ADD Expression
+   38               | Expression . SUB Expression
+   39               | Expression . MUL Expression
+   40               | Expression . QUO Expression
+   41               | Expression . REM Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   50            | Expression GEQ Expression .
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
+
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
+
+    $default  reduce using rule 50 (CompareExpr)
 
 
 State 97
@@ -2176,22 +2229,29 @@ State 97
    38               | Expression . SUB Expression
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
-   40               | Expression QUO Expression .
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   51            | Expression LEQ Expression .
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
 
-    $default  reduce using rule 40 (ArithmeticExpr)
+    $default  reduce using rule 51 (CompareExpr)
 
 
 State 98
@@ -2206,21 +2266,28 @@ State 98
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   41               | Expression REM Expression .
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   52            | Expression EQL Expression .
+   53            | Expression . NEQ Expression
 
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
 
-    $default  reduce using rule 41 (ArithmeticExpr)
+    $default  reduce using rule 52 (CompareExpr)
 
 
 State 99
@@ -2235,28 +2302,28 @@ State 99
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   52            | Expression GEQ Expression .
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
+   53            | Expression NEQ Expression .
 
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
 
-    $default  reduce using rule 52 (CompareExpr)
+    $default  reduce using rule 53 (CompareExpr)
 
 
 State 100
@@ -2271,28 +2338,28 @@ State 100
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   53            | Expression LEQ Expression .
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   49            | Expression LST Expression .
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
 
-    $default  reduce using rule 53 (CompareExpr)
+    $default  reduce using rule 49 (CompareExpr)
 
 
 State 101
@@ -2307,139 +2374,31 @@ State 101
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   54            | Expression EQL Expression .
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   48            | Expression GTR Expression .
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
 
-    $default  reduce using rule 54 (CompareExpr)
+    $default  reduce using rule 48 (CompareExpr)
 
 
 State 102
-
-   32 AssignmentExpr: Expression . ADD_ASSIGN Expression
-   33               | Expression . SUB_ASSIGN Expression
-   34               | Expression . MUL_ASSIGN Expression
-   35               | Expression . QUO_ASSIGN Expression
-   36               | Expression . REM_ASSIGN Expression
-   37 ArithmeticExpr: Expression . ADD Expression
-   38               | Expression . SUB Expression
-   39               | Expression . MUL Expression
-   40               | Expression . QUO Expression
-   41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
-   55            | Expression NEQ Expression .
-
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
-
-    $default  reduce using rule 55 (CompareExpr)
-
-
-State 103
-
-   32 AssignmentExpr: Expression . ADD_ASSIGN Expression
-   33               | Expression . SUB_ASSIGN Expression
-   34               | Expression . MUL_ASSIGN Expression
-   35               | Expression . QUO_ASSIGN Expression
-   36               | Expression . REM_ASSIGN Expression
-   37 ArithmeticExpr: Expression . ADD Expression
-   38               | Expression . SUB Expression
-   39               | Expression . MUL Expression
-   40               | Expression . QUO Expression
-   41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   51            | Expression LST Expression .
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
-
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
-
-    $default  reduce using rule 51 (CompareExpr)
-
-
-State 104
-
-   32 AssignmentExpr: Expression . ADD_ASSIGN Expression
-   33               | Expression . SUB_ASSIGN Expression
-   34               | Expression . MUL_ASSIGN Expression
-   35               | Expression . QUO_ASSIGN Expression
-   36               | Expression . REM_ASSIGN Expression
-   37 ArithmeticExpr: Expression . ADD Expression
-   38               | Expression . SUB Expression
-   39               | Expression . MUL Expression
-   40               | Expression . QUO Expression
-   41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   50            | Expression GTR Expression .
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
-
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
-
-    $default  reduce using rule 50 (CompareExpr)
-
-
-State 105
 
    32 AssignmentExpr: Expression . ADD_ASSIGN Expression
    32               | Expression ADD_ASSIGN Expression .
@@ -2452,26 +2411,26 @@ State 105
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
 
     $default  reduce using rule 32 (AssignmentExpr)
 
 
-State 106
+State 103
 
    32 AssignmentExpr: Expression . ADD_ASSIGN Expression
    33               | Expression . SUB_ASSIGN Expression
@@ -2484,26 +2443,26 @@ State 106
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
 
     $default  reduce using rule 33 (AssignmentExpr)
 
 
-State 107
+State 104
 
    32 AssignmentExpr: Expression . ADD_ASSIGN Expression
    33               | Expression . SUB_ASSIGN Expression
@@ -2516,19 +2475,19 @@ State 107
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
     $default  reduce using rule 34 (AssignmentExpr)
 
 
-State 108
+State 105
 
    32 AssignmentExpr: Expression . ADD_ASSIGN Expression
    33               | Expression . SUB_ASSIGN Expression
@@ -2541,19 +2500,19 @@ State 108
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
     $default  reduce using rule 35 (AssignmentExpr)
 
 
-State 109
+State 106
 
    32 AssignmentExpr: Expression . ADD_ASSIGN Expression
    33               | Expression . SUB_ASSIGN Expression
@@ -2566,19 +2525,19 @@ State 109
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
     $default  reduce using rule 36 (AssignmentExpr)
 
 
-State 110
+State 107
 
    32 AssignmentExpr: Expression . ADD_ASSIGN Expression
    33               | Expression . SUB_ASSIGN Expression
@@ -2590,39 +2549,39 @@ State 110
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   49            | Expression LAND Expression .
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   47            | Expression LAND Expression .
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    GEQ         shift, and go to state 65
-    LEQ         shift, and go to state 66
-    EQL         shift, and go to state 67
-    NEQ         shift, and go to state 68
-    LST         shift, and go to state 69
-    GTR         shift, and go to state 70
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
-    LAND        shift, and go to state 76
-    LOR         shift, and go to state 77
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    GEQ         shift, and go to state 63
+    LEQ         shift, and go to state 64
+    EQL         shift, and go to state 65
+    NEQ         shift, and go to state 66
+    LST         shift, and go to state 67
+    GTR         shift, and go to state 68
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
+    LAND        shift, and go to state 74
+    LOR         shift, and go to state 75
 
-    $default  reduce using rule 49 (LogicalExpr)
+    $default  reduce using rule 47 (LogicalExpr)
 
 
-State 111
+State 108
 
    32 AssignmentExpr: Expression . ADD_ASSIGN Expression
    33               | Expression . SUB_ASSIGN Expression
@@ -2634,39 +2593,39 @@ State 111
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   48            | Expression LOR Expression .
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   46            | Expression LOR Expression .
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    GEQ         shift, and go to state 65
-    LEQ         shift, and go to state 66
-    EQL         shift, and go to state 67
-    NEQ         shift, and go to state 68
-    LST         shift, and go to state 69
-    GTR         shift, and go to state 70
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
-    LAND        shift, and go to state 76
-    LOR         shift, and go to state 77
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    GEQ         shift, and go to state 63
+    LEQ         shift, and go to state 64
+    EQL         shift, and go to state 65
+    NEQ         shift, and go to state 66
+    LST         shift, and go to state 67
+    GTR         shift, and go to state 68
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
+    LAND        shift, and go to state 74
+    LOR         shift, and go to state 75
 
-    $default  reduce using rule 48 (LogicalExpr)
+    $default  reduce using rule 46 (LogicalExpr)
 
 
-State 112
+State 109
 
    30 AssignmentExpr: ID ASSIGN Expression .
    32               | Expression . ADD_ASSIGN Expression
@@ -2679,30 +2638,30 @@ State 112
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
 
     $default  reduce using rule 30 (AssignmentExpr)
 
 
-State 113
+State 110
 
    31 AssignmentExpr: ID '[' Expression . ']' ASSIGN Expression
    32               | Expression . ADD_ASSIGN Expression
@@ -2715,66 +2674,38 @@ State 113
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
-   59 TermExpr: ID '[' Expression . ']'
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
+   57 TermExpr: ID '[' Expression . ']'
 
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    GEQ         shift, and go to state 65
-    LEQ         shift, and go to state 66
-    EQL         shift, and go to state 67
-    NEQ         shift, and go to state 68
-    LST         shift, and go to state 69
-    GTR         shift, and go to state 70
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
-    LAND        shift, and go to state 76
-    LOR         shift, and go to state 77
-    ']'         shift, and go to state 124
-
-
-State 114
-
-   42 ConversionExpr: INT '(' IDENT ')' .
-
-    $default  reduce using rule 42 (ConversionExpr)
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    GEQ         shift, and go to state 63
+    LEQ         shift, and go to state 64
+    EQL         shift, and go to state 65
+    NEQ         shift, and go to state 66
+    LST         shift, and go to state 67
+    GTR         shift, and go to state 68
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
+    LAND        shift, and go to state 74
+    LOR         shift, and go to state 75
+    ']'         shift, and go to state 120
 
 
-State 115
-
-   44 ConversionExpr: INT '(' Num ')' .
-
-    $default  reduce using rule 44 (ConversionExpr)
-
-
-State 116
-
-   43 ConversionExpr: FLOAT '(' IDENT ')' .
-
-    $default  reduce using rule 43 (ConversionExpr)
-
-
-State 117
-
-   45 ConversionExpr: FLOAT '(' Num ')' .
-
-    $default  reduce using rule 45 (ConversionExpr)
-
-
-State 118
+State 111
 
     2 StatementList: StatementList . Statement SEMICOLON
     4              | StatementList . Statement
@@ -2802,7 +2733,7 @@ State 118
     STRING_LIT  shift, and go to state 20
     IDENT       shift, and go to state 21
 
-    Statement        go to state 57
+    Statement        go to state 55
     PrintStmt        go to state 25
     IfStmt           go to state 26
     LoopStmt         go to state 27
@@ -2819,10 +2750,10 @@ State 118
     TermExpr         go to state 38
     Num              go to state 39
     ID               go to state 40
-    Bracket          go to state 125
+    Bracket          go to state 121
 
 
-State 119
+State 112
 
    17 LoopCondition: Expression ';' Expression . ';' Expression '{'
    32 AssignmentExpr: Expression . ADD_ASSIGN Expression
@@ -2835,37 +2766,37 @@ State 119
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    GEQ         shift, and go to state 65
-    LEQ         shift, and go to state 66
-    EQL         shift, and go to state 67
-    NEQ         shift, and go to state 68
-    LST         shift, and go to state 69
-    GTR         shift, and go to state 70
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
-    LAND        shift, and go to state 76
-    LOR         shift, and go to state 77
-    ';'         shift, and go to state 126
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    GEQ         shift, and go to state 63
+    LEQ         shift, and go to state 64
+    EQL         shift, and go to state 65
+    NEQ         shift, and go to state 66
+    LST         shift, and go to state 67
+    GTR         shift, and go to state 68
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
+    LAND        shift, and go to state 74
+    LOR         shift, and go to state 75
+    ';'         shift, and go to state 122
 
 
-State 120
+State 113
 
    16 LoopCondition: Expression Bracket Expression .
    32 AssignmentExpr: Expression . ADD_ASSIGN Expression
@@ -2878,47 +2809,75 @@ State 120
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    GEQ         shift, and go to state 65
-    LEQ         shift, and go to state 66
-    EQL         shift, and go to state 67
-    NEQ         shift, and go to state 68
-    LST         shift, and go to state 69
-    GTR         shift, and go to state 70
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
-    LAND        shift, and go to state 76
-    LOR         shift, and go to state 77
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    GEQ         shift, and go to state 63
+    LEQ         shift, and go to state 64
+    EQL         shift, and go to state 65
+    NEQ         shift, and go to state 66
+    LST         shift, and go to state 67
+    GTR         shift, and go to state 68
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
+    LAND        shift, and go to state 74
+    LOR         shift, and go to state 75
 
     ADD       [reduce using rule 16 (LoopCondition)]
     SUB       [reduce using rule 16 (LoopCondition)]
     $default  reduce using rule 16 (LoopCondition)
 
 
-State 121
+State 114
 
    11 PrintStmt: PRINT '(' ID ')' .
 
     $default  reduce using rule 11 (PrintStmt)
 
 
-State 122
+State 115
+
+   42 ConversionExpr: '(' INT ')' TermExpr .
+   62 TermExpr: TermExpr . INC
+   63         | TermExpr . DEC
+
+    $default  reduce using rule 42 (ConversionExpr)
+
+
+State 116
+
+   56 TermExpr: ID .
+   57         | ID . '[' Expression ']'
+
+    '['  shift, and go to state 123
+
+    $default  reduce using rule 56 (TermExpr)
+
+
+State 117
+
+   43 ConversionExpr: '(' FLOAT ')' TermExpr .
+   62 TermExpr: TermExpr . INC
+   63         | TermExpr . DEC
+
+    $default  reduce using rule 43 (ConversionExpr)
+
+
+State 118
 
    20 DeclarationStmt: Type IDENT ASSIGN Expression .
    32 AssignmentExpr: Expression . ADD_ASSIGN Expression
@@ -2931,38 +2890,38 @@ State 122
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    GEQ         shift, and go to state 65
-    LEQ         shift, and go to state 66
-    EQL         shift, and go to state 67
-    NEQ         shift, and go to state 68
-    LST         shift, and go to state 69
-    GTR         shift, and go to state 70
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
-    LAND        shift, and go to state 76
-    LOR         shift, and go to state 77
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    GEQ         shift, and go to state 63
+    LEQ         shift, and go to state 64
+    EQL         shift, and go to state 65
+    NEQ         shift, and go to state 66
+    LST         shift, and go to state 67
+    GTR         shift, and go to state 68
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
+    LAND        shift, and go to state 74
+    LOR         shift, and go to state 75
 
     $default  reduce using rule 20 (DeclarationStmt)
 
 
-State 123
+State 119
 
    19 DeclarationStmt: Type IDENT '[' Expression . ']'
    32 AssignmentExpr: Expression . ADD_ASSIGN Expression
@@ -2975,124 +2934,122 @@ State 123
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    GEQ         shift, and go to state 65
-    LEQ         shift, and go to state 66
-    EQL         shift, and go to state 67
-    NEQ         shift, and go to state 68
-    LST         shift, and go to state 69
-    GTR         shift, and go to state 70
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
-    LAND        shift, and go to state 76
-    LOR         shift, and go to state 77
-    ']'         shift, and go to state 127
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    GEQ         shift, and go to state 63
+    LEQ         shift, and go to state 64
+    EQL         shift, and go to state 65
+    NEQ         shift, and go to state 66
+    LST         shift, and go to state 67
+    GTR         shift, and go to state 68
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
+    LAND        shift, and go to state 74
+    LOR         shift, and go to state 75
+    ']'         shift, and go to state 124
 
 
-State 124
+State 120
 
    31 AssignmentExpr: ID '[' Expression ']' . ASSIGN Expression
-   59 TermExpr: ID '[' Expression ']' .
+   57 TermExpr: ID '[' Expression ']' .
 
-    ASSIGN  shift, and go to state 128
+    ASSIGN  shift, and go to state 125
 
-    $default  reduce using rule 59 (TermExpr)
+    $default  reduce using rule 57 (TermExpr)
 
 
-State 125
+State 121
 
    15 LoopStmt: WHILE Expression Bracket StatementList Bracket .
-   62 TermExpr: Bracket .
+   60 TermExpr: Bracket .
 
     ADD         reduce using rule 15 (LoopStmt)
-    ADD         [reduce using rule 62 (TermExpr)]
+    ADD         [reduce using rule 60 (TermExpr)]
     SUB         reduce using rule 15 (LoopStmt)
-    SUB         [reduce using rule 62 (TermExpr)]
-    MUL         reduce using rule 62 (TermExpr)
-    QUO         reduce using rule 62 (TermExpr)
-    REM         reduce using rule 62 (TermExpr)
+    SUB         [reduce using rule 60 (TermExpr)]
+    MUL         reduce using rule 60 (TermExpr)
+    QUO         reduce using rule 60 (TermExpr)
+    REM         reduce using rule 60 (TermExpr)
     INT         reduce using rule 15 (LoopStmt)
-    INT         [reduce using rule 62 (TermExpr)]
+    INT         [reduce using rule 60 (TermExpr)]
     FLOAT       reduce using rule 15 (LoopStmt)
-    FLOAT       [reduce using rule 62 (TermExpr)]
+    FLOAT       [reduce using rule 60 (TermExpr)]
     BOOL        reduce using rule 15 (LoopStmt)
-    BOOL        [reduce using rule 62 (TermExpr)]
+    BOOL        [reduce using rule 60 (TermExpr)]
     STRING      reduce using rule 15 (LoopStmt)
-    STRING      [reduce using rule 62 (TermExpr)]
-    INC         reduce using rule 62 (TermExpr)
-    DEC         reduce using rule 62 (TermExpr)
-    GEQ         reduce using rule 62 (TermExpr)
-    LEQ         reduce using rule 62 (TermExpr)
-    EQL         reduce using rule 62 (TermExpr)
-    NEQ         reduce using rule 62 (TermExpr)
-    LST         reduce using rule 62 (TermExpr)
-    GTR         reduce using rule 62 (TermExpr)
-    ADD_ASSIGN  reduce using rule 62 (TermExpr)
-    SUB_ASSIGN  reduce using rule 62 (TermExpr)
-    MUL_ASSIGN  reduce using rule 62 (TermExpr)
-    QUO_ASSIGN  reduce using rule 62 (TermExpr)
-    REM_ASSIGN  reduce using rule 62 (TermExpr)
-    LAND        reduce using rule 62 (TermExpr)
-    LOR         reduce using rule 62 (TermExpr)
+    STRING      [reduce using rule 60 (TermExpr)]
+    INC         reduce using rule 60 (TermExpr)
+    DEC         reduce using rule 60 (TermExpr)
+    GEQ         reduce using rule 60 (TermExpr)
+    LEQ         reduce using rule 60 (TermExpr)
+    EQL         reduce using rule 60 (TermExpr)
+    NEQ         reduce using rule 60 (TermExpr)
+    LST         reduce using rule 60 (TermExpr)
+    GTR         reduce using rule 60 (TermExpr)
+    ADD_ASSIGN  reduce using rule 60 (TermExpr)
+    SUB_ASSIGN  reduce using rule 60 (TermExpr)
+    MUL_ASSIGN  reduce using rule 60 (TermExpr)
+    QUO_ASSIGN  reduce using rule 60 (TermExpr)
+    REM_ASSIGN  reduce using rule 60 (TermExpr)
+    LAND        reduce using rule 60 (TermExpr)
+    LOR         reduce using rule 60 (TermExpr)
     NOT         reduce using rule 15 (LoopStmt)
-    NOT         [reduce using rule 62 (TermExpr)]
+    NOT         [reduce using rule 60 (TermExpr)]
     SEMICOLON   reduce using rule 15 (LoopStmt)
-    SEMICOLON   [reduce using rule 62 (TermExpr)]
+    SEMICOLON   [reduce using rule 60 (TermExpr)]
     IF          reduce using rule 15 (LoopStmt)
-    IF          [reduce using rule 62 (TermExpr)]
+    IF          [reduce using rule 60 (TermExpr)]
     ELSE        reduce using rule 15 (LoopStmt)
-    ELSE        [reduce using rule 62 (TermExpr)]
+    ELSE        [reduce using rule 60 (TermExpr)]
     WHILE       reduce using rule 15 (LoopStmt)
-    WHILE       [reduce using rule 62 (TermExpr)]
+    WHILE       [reduce using rule 60 (TermExpr)]
     FOR         reduce using rule 15 (LoopStmt)
-    FOR         [reduce using rule 62 (TermExpr)]
+    FOR         [reduce using rule 60 (TermExpr)]
     PRINT       reduce using rule 15 (LoopStmt)
-    PRINT       [reduce using rule 62 (TermExpr)]
+    PRINT       [reduce using rule 60 (TermExpr)]
     TRUE        reduce using rule 15 (LoopStmt)
-    TRUE        [reduce using rule 62 (TermExpr)]
+    TRUE        [reduce using rule 60 (TermExpr)]
     FALSE       reduce using rule 15 (LoopStmt)
-    FALSE       [reduce using rule 62 (TermExpr)]
+    FALSE       [reduce using rule 60 (TermExpr)]
     '{'         reduce using rule 15 (LoopStmt)
-    '{'         [reduce using rule 62 (TermExpr)]
+    '{'         [reduce using rule 60 (TermExpr)]
     '}'         reduce using rule 15 (LoopStmt)
-    '}'         [reduce using rule 62 (TermExpr)]
+    '}'         [reduce using rule 60 (TermExpr)]
     '('         reduce using rule 15 (LoopStmt)
-    '('         [reduce using rule 62 (TermExpr)]
+    '('         [reduce using rule 60 (TermExpr)]
     INT_LIT     reduce using rule 15 (LoopStmt)
-    INT_LIT     [reduce using rule 62 (TermExpr)]
+    INT_LIT     [reduce using rule 60 (TermExpr)]
     FLOAT_LIT   reduce using rule 15 (LoopStmt)
-    FLOAT_LIT   [reduce using rule 62 (TermExpr)]
+    FLOAT_LIT   [reduce using rule 60 (TermExpr)]
     STRING_LIT  reduce using rule 15 (LoopStmt)
-    STRING_LIT  [reduce using rule 62 (TermExpr)]
+    STRING_LIT  [reduce using rule 60 (TermExpr)]
     IDENT       reduce using rule 15 (LoopStmt)
-    IDENT       [reduce using rule 62 (TermExpr)]
+    IDENT       [reduce using rule 60 (TermExpr)]
     $default    reduce using rule 15 (LoopStmt)
 
 
-State 126
+State 122
 
    17 LoopCondition: Expression ';' Expression ';' . Expression '{'
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -3104,7 +3061,7 @@ State 126
     STRING_LIT  shift, and go to state 20
     IDENT       shift, and go to state 21
 
-    Expression      go to state 129
+    Expression      go to state 126
     AssignmentExpr  go to state 31
     ArithmeticExpr  go to state 32
     ConversionExpr  go to state 33
@@ -3118,21 +3075,50 @@ State 126
     Bracket         go to state 41
 
 
-State 127
+State 123
+
+   57 TermExpr: ID '[' . Expression ']'
+
+    ADD         shift, and go to state 1
+    SUB         shift, and go to state 2
+    NOT         shift, and go to state 7
+    TRUE        shift, and go to state 13
+    FALSE       shift, and go to state 14
+    '{'         shift, and go to state 15
+    '}'         shift, and go to state 16
+    '('         shift, and go to state 17
+    INT_LIT     shift, and go to state 18
+    FLOAT_LIT   shift, and go to state 19
+    STRING_LIT  shift, and go to state 20
+    IDENT       shift, and go to state 21
+
+    Expression      go to state 127
+    AssignmentExpr  go to state 31
+    ArithmeticExpr  go to state 32
+    ConversionExpr  go to state 33
+    BoolExpr        go to state 34
+    LogicalExpr     go to state 35
+    CompareExpr     go to state 36
+    Bool            go to state 37
+    TermExpr        go to state 38
+    Num             go to state 39
+    ID              go to state 40
+    Bracket         go to state 41
+
+
+State 124
 
    19 DeclarationStmt: Type IDENT '[' Expression ']' .
 
     $default  reduce using rule 19 (DeclarationStmt)
 
 
-State 128
+State 125
 
    31 AssignmentExpr: ID '[' Expression ']' ASSIGN . Expression
 
     ADD         shift, and go to state 1
     SUB         shift, and go to state 2
-    INT         shift, and go to state 46
-    FLOAT       shift, and go to state 47
     NOT         shift, and go to state 7
     TRUE        shift, and go to state 13
     FALSE       shift, and go to state 14
@@ -3144,7 +3130,7 @@ State 128
     STRING_LIT  shift, and go to state 20
     IDENT       shift, and go to state 21
 
-    Expression      go to state 130
+    Expression      go to state 128
     AssignmentExpr  go to state 31
     ArithmeticExpr  go to state 32
     ConversionExpr  go to state 33
@@ -3158,7 +3144,7 @@ State 128
     Bracket         go to state 41
 
 
-State 129
+State 126
 
    17 LoopCondition: Expression ';' Expression ';' Expression . '{'
    32 AssignmentExpr: Expression . ADD_ASSIGN Expression
@@ -3171,37 +3157,80 @@ State 129
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    GEQ         shift, and go to state 65
-    LEQ         shift, and go to state 66
-    EQL         shift, and go to state 67
-    NEQ         shift, and go to state 68
-    LST         shift, and go to state 69
-    GTR         shift, and go to state 70
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
-    LAND        shift, and go to state 76
-    LOR         shift, and go to state 77
-    '{'         shift, and go to state 131
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    GEQ         shift, and go to state 63
+    LEQ         shift, and go to state 64
+    EQL         shift, and go to state 65
+    NEQ         shift, and go to state 66
+    LST         shift, and go to state 67
+    GTR         shift, and go to state 68
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
+    LAND        shift, and go to state 74
+    LOR         shift, and go to state 75
+    '{'         shift, and go to state 129
 
 
-State 130
+State 127
+
+   32 AssignmentExpr: Expression . ADD_ASSIGN Expression
+   33               | Expression . SUB_ASSIGN Expression
+   34               | Expression . MUL_ASSIGN Expression
+   35               | Expression . QUO_ASSIGN Expression
+   36               | Expression . REM_ASSIGN Expression
+   37 ArithmeticExpr: Expression . ADD Expression
+   38               | Expression . SUB Expression
+   39               | Expression . MUL Expression
+   40               | Expression . QUO Expression
+   41               | Expression . REM Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
+   57 TermExpr: ID '[' Expression . ']'
+
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    GEQ         shift, and go to state 63
+    LEQ         shift, and go to state 64
+    EQL         shift, and go to state 65
+    NEQ         shift, and go to state 66
+    LST         shift, and go to state 67
+    GTR         shift, and go to state 68
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
+    LAND        shift, and go to state 74
+    LOR         shift, and go to state 75
+    ']'         shift, and go to state 130
+
+
+State 128
 
    31 AssignmentExpr: ID '[' Expression ']' ASSIGN Expression .
    32               | Expression . ADD_ASSIGN Expression
@@ -3214,31 +3243,38 @@ State 130
    39               | Expression . MUL Expression
    40               | Expression . QUO Expression
    41               | Expression . REM Expression
-   48 LogicalExpr: Expression . LOR Expression
-   49            | Expression . LAND Expression
-   50 CompareExpr: Expression . GTR Expression
-   51            | Expression . LST Expression
-   52            | Expression . GEQ Expression
-   53            | Expression . LEQ Expression
-   54            | Expression . EQL Expression
-   55            | Expression . NEQ Expression
+   46 LogicalExpr: Expression . LOR Expression
+   47            | Expression . LAND Expression
+   48 CompareExpr: Expression . GTR Expression
+   49            | Expression . LST Expression
+   50            | Expression . GEQ Expression
+   51            | Expression . LEQ Expression
+   52            | Expression . EQL Expression
+   53            | Expression . NEQ Expression
 
-    ADD         shift, and go to state 60
-    SUB         shift, and go to state 61
-    MUL         shift, and go to state 62
-    QUO         shift, and go to state 63
-    REM         shift, and go to state 64
-    ADD_ASSIGN  shift, and go to state 71
-    SUB_ASSIGN  shift, and go to state 72
-    MUL_ASSIGN  shift, and go to state 73
-    QUO_ASSIGN  shift, and go to state 74
-    REM_ASSIGN  shift, and go to state 75
+    ADD         shift, and go to state 58
+    SUB         shift, and go to state 59
+    MUL         shift, and go to state 60
+    QUO         shift, and go to state 61
+    REM         shift, and go to state 62
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
+    MUL_ASSIGN  shift, and go to state 71
+    QUO_ASSIGN  shift, and go to state 72
+    REM_ASSIGN  shift, and go to state 73
 
     $default  reduce using rule 31 (AssignmentExpr)
 
 
-State 131
+State 129
 
    17 LoopCondition: Expression ';' Expression ';' Expression '{' .
 
     $default  reduce using rule 17 (LoopCondition)
+
+
+State 130
+
+   57 TermExpr: ID '[' Expression ']' .
+
+    $default  reduce using rule 57 (TermExpr)
