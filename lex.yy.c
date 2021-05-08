@@ -942,7 +942,7 @@ YY_RULE_SETUP
 case 17:
 YY_RULE_SETUP
 #line 54 "compiler_hw2.l"
-{ return LST; }
+{ return LSS; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP

@@ -64,7 +64,7 @@ extern int yydebug;
     LEQ = 270,
     EQL = 271,
     NEQ = 272,
-    LST = 273,
+    LSS = 273,
     GTR = 274,
     ASSIGN = 275,
     ADD_ASSIGN = 276,
@@ -105,7 +105,7 @@ extern int yydebug;
 #define LEQ 270
 #define EQL 271
 #define NEQ 272
-#define LST 273
+#define LSS 273
 #define GTR 274
 #define ASSIGN 275
 #define ADD_ASSIGN 276
@@ -133,7 +133,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 57 "compiler_hw2.y"
+#line 59 "compiler_hw2.y"
 
     int i_val;
     float f_val;

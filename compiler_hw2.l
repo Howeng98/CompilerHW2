@@ -51,7 +51,7 @@ newline		[\n]
 "--"         { return DEC; }
 
 ">"          { return GTR; }
-"<"          { return LST; }
+"<"          { return LSS; }
 ">="         { return GEQ; }
 "<="         { return LEQ; }
 "=="         { return EQL; }

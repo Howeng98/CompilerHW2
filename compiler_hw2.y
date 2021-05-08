@@ -13,6 +13,8 @@
     extern char* yytext;
     
     int current_scope_level = 0;
+    bool scope_toggle = false;
+    bool scope_toggle2 = false;
     int address = 0;
     char arithmetic[5];
     int index_in_each_scope[5] = {0};
@@ -68,7 +70,7 @@
 %token ADD SUB MUL QUO REM
 %token INT FLOAT BOOL STRING
 %token INC DEC
-%token GEQ LEQ EQL NEQ LST GTR
+%token GEQ LEQ EQL NEQ LSS GTR
 %token ASSIGN ADD_ASSIGN SUB_ASSIGN MUL_ASSIGN QUO_ASSIGN REM_ASSIGN
 %token LAND LOR NOT
 %token SEMICOLON
@@ -78,7 +80,7 @@
 
 
 %right LOR LAND
-%left LST GTR GEQ LEQ NEQ EQL
+%left LSS GTR GEQ LEQ NEQ EQL
 %left ASSIGN
 %left ADD SUB
 %left ADD_ASSIGN SUB_ASSIGN
@@ -122,7 +124,7 @@ StatementList
     }
     | StatementList Statement {
         // printf("Stmt3\n");    
-    }    
+    }
 ;
 
 Statement
@@ -149,28 +151,33 @@ PrintStmt
     
 ;
 
-IfStmt
-    : IF Expression {
-        ;
+IfStmt    
+    : IF {
+        if(scope_toggle)
+            scope_toggle2 = true;
     }
-    | ELSE
+    | ELSE {
+        scope_toggle = true;       
+    }
+;
+
 ;
 
 LoopStmt
     : FOR LoopCondition {
-        current_scope_level++;
+        // current_scope_level++;
     }
     | WHILE Expression Bracket StatementList Bracket{
         // printf("------While END------\n");
         // current_scope_level++;
-    }
+    }    
 ;
 
 LoopCondition
     : Expression Bracket Expression {
         // printf("LoopCondition1\n");
     }
-    | Expression ';' Expression ';' Expression '{' {
+    | '(' Expression SEMICOLON Expression SEMICOLON Expression ')' Bracket {
         // printf("LoopCondition2\n");
     }
 ;
@@ -287,8 +294,8 @@ CompareExpr
     : Expression GTR Expression {
         printf("GTR\n"); 
     }
-    | Expression LST Expression { 
-        printf("LST\n"); 
+    | Expression LSS Expression { 
+        printf("LSS\n"); 
     }
     | Expression GEQ Expression { 
         printf("GEQ\n"); 
@@ -365,18 +372,19 @@ ID
 ;
 
 Bracket
-    : '(' Expression ')'{ 
+    : '(' Expression ')'{
         $$=$2;
-    }    
+    }
     | '{' {        
-        current_scope_level++;        
+        current_scope_level++;
         // printf("--- Bracket Start ---\n");
     }
-    | '}' {              
+    | '}' {         
         dump_symbol();
         current_scope_level--;
         // printf("--- Bracket END ---\n");  
     }
+    
 ;
 
 %%
@@ -435,23 +443,47 @@ static int lookup_symbol(char* var_name){
     if(head == NULL){
         return -1;
     }
-    else{
+    else {
         while(current->next != NULL){
             // **current->scope_level == current_scope_level**
             // make sure that current->scope_level is match current_scope_level
 
             // **current->scope_level == 0**
             // return current->address when the variable is define in global(scope_level 0)
+            if(scope_toggle && scope_toggle2){
+                current_scope_level++;
+                if(!strcmp(current->name, var_name) && (current->scope_level == current_scope_level)){
+                    scope_toggle = false;
+                    scope_toggle2 = false;
+                    current_scope_level--;
+                    return current->address;
+                }
+                current_scope_level--;                 
+            }
+            else{
+                if(!strcmp(current->name, var_name) && (current->scope_level == current_scope_level || current->scope_level == 0) && current->printed == 0){
+                    return current->address;
+                }
+            }            
+            current = current->next;            
+        }
+        if(scope_toggle && scope_toggle2){
+                current_scope_level++;
+                if(!strcmp(current->name, var_name) && (current->scope_level == current_scope_level)){
+                    scope_toggle = false;
+                    scope_toggle2 = false;
+                    current_scope_level--;
+                    return current->address;
+                }
+                current_scope_level--;
+            }
+        else{
             if(!strcmp(current->name, var_name) && (current->scope_level == current_scope_level || current->scope_level == 0) && current->printed == 0){
                 return current->address;
             }
-            current = current->next;            
-        }
-        if(!strcmp(current->name, var_name) && (current->scope_level == current_scope_level || current->scope_level == 0) && current->printed == 0){
-            return current->address;
         }        
-    }
-    return 0;    
+    }    
+    return -1;    
 }
 
 static void dump_symbol(void){    
