@@ -143,6 +143,7 @@ Statement
 
 PrintStmt
     : PRINT Bracket {
+        // printf("error:%d: non-bool (type %s) used as for condition\n", yylineno, $3);
         printf("PRINT %s\n", $2);
     }
     /* | PRINT '(' TermExpr ')' {
@@ -223,6 +224,9 @@ Expression
 
 AssignmentExpr
     : ID ASSIGN Expression {
+        if(strcmp($1,$3) != 0){
+            printf("error:%d: invalid operation: ASSIGN (mismatched types %s and %s)\n", yylineno, $1, $3);
+        }
         printf("ASSIGN\n");
     }
     | ID '[' Expression ']' ASSIGN Expression {                   
@@ -247,18 +251,30 @@ AssignmentExpr
 
 ArithmeticExpr
     : Expression ADD Expression {
+        // if(strcmp($1,$3) != 0){
+        //     printf("error:%d: invalid operation: ADD (mismatched types %s and %s)\n", yylineno, $1, $3);
+        // }
         printf("ADD\n");
     }
     | Expression SUB Expression {
+        // if(strcmp($1,$3) != 0){
+        //     printf("error:%d: invalid operation: SUB (mismatched types %s and %s)\n", yylineno, $1, $3);
+        // }
         printf("SUB\n");
     }
     | Expression MUL Expression {
         printf("MUL\n");
     }
     | Expression QUO Expression {
+        // if(!strcmp($1,"float")|| !strcmp($3,"float")){
+        //     printf("error:%d: invalid operation: (operator QUO not defined on float)\n", yylineno);
+        // }
         printf("QUO\n");
     }
     | Expression REM Expression {
+        // if(!strcmp($1,"float")|| !strcmp($3,"float")){
+        //     printf("error:%d: invalid operation: (operator REM not defined on float)\n", yylineno);
+        // }
         printf("REM\n");
     }
 ;
@@ -283,9 +299,21 @@ BoolExpr
 
 LogicalExpr
     : Expression LOR Expression {
+        // if(strcmp($1, "bool") != 0){
+        //     printf("error:%d: invalid operation: (operator OR not defined on %s)\n", yylineno, $1);
+        // }
+        // else if(strcmp($3, "bool") != 0){
+        //     printf("error:%d: invalid operation: (operator OR not defined on %s)\n", yylineno, $3);
+        // }
         printf("OR\n");
     }
     | Expression LAND Expression {
+        // if(strcmp($1, "bool") != 0){
+        //     printf("error:%d: invalid operation: (operator AND not defined on %s)\n", yylineno, $1);
+        // }
+        // else if(strcmp($3, "bool") != 0){
+        //     printf("error:%d: invalid operation: (operator AND not defined on %s)\n", yylineno, $3);
+        // }
         printf("AND\n");
     }
 ;
@@ -372,8 +400,8 @@ ID
 ;
 
 Bracket
-    : '(' Expression ')'{
-        $$=$2;
+    : '(' Expression ')'{        
+        $$=$2;        
     }
     | '{' {        
         current_scope_level++;
@@ -498,7 +526,7 @@ void printList(struct symbol_table* head){
     // printf("Linked_List:");
     int index = 0;
     if(head == NULL){
-        perror("Error:Head is NULL!");
+        perror("Error:Head is NULL!!!");
         return;
     }
     else{
