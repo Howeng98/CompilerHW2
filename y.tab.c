@@ -66,19 +66,18 @@
 
 
 /* First part of user prologue.  */
-#line 3 "compiler_hw2.y"
+#line 2 "compiler_hw2.y"
 
     #include "common.h" //Extern variables that communicate with lex
     #include "string.h"
     #include "stdbool.h"
     // #define YYDEBUG 1
     // int yydebug = 1;
-
     extern int yylineno;
     extern int yylex();
     extern FILE *yyin;
     extern char* yytext;
-    
+
     int current_scope_level = 0;
     bool scope_toggle = false;
     bool scope_toggle2 = false;
@@ -86,11 +85,11 @@
     char arithmetic[5];
     int index_in_each_scope[5] = {0};
 
+
     void yyerror (char const *s)
     {
         printf("error:%d: %s\n", yylineno, s);
     }
-
     /* Define a struct to store variables information */
     struct symbol_table{
         int index;
@@ -103,7 +102,6 @@
         char element_type[10];
         struct symbol_table* next;
     };
-
     struct symbol_table* head = NULL;
     struct symbol_table* node;
     struct symbol_table* current = NULL;
@@ -116,7 +114,7 @@
     void printList(struct symbol_table* head);
     char* getType(char* var_name);
 
-#line 120 "y.tab.c"
+#line 118 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -248,7 +246,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 59 "compiler_hw2.y"
+#line 53 "compiler_hw2.y"
 
     int i_val;
     float f_val;
@@ -257,7 +255,7 @@ union YYSTYPE
     char *boool;
     char *type;    
 
-#line 261 "y.tab.c"
+#line 259 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -636,14 +634,14 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   115,   115,   119,   122,   125,   131,   132,   135,   136,
-     139,   145,   155,   159,   167,   170,   177,   180,   187,   190,
-     193,   202,   205,   208,   211,   217,   218,   219,   220,   221,
-     225,   228,   231,   234,   237,   240,   243,   249,   252,   255,
-     258,   261,   267,   270,   276,   279,   285,   288,   294,   297,
-     300,   303,   306,   309,   315,   319,   326,   327,   330,   334,
-     335,   336,   339,   342,   345,   348,   351,   357,   361,   368,
-     375,   378,   382
+       0,   100,   100,   103,   106,   109,   115,   116,   119,   120,
+     123,   128,   138,   142,   150,   153,   160,   163,   169,   172,
+     175,   183,   186,   189,   192,   197,   198,   199,   200,   201,
+     204,   207,   210,   213,   216,   219,   222,   227,   230,   233,
+     236,   239,   244,   247,   252,   255,   260,   263,   268,   271,
+     274,   277,   280,   283,   288,   292,   298,   299,   302,   306,
+     307,   308,   311,   314,   317,   320,   323,   328,   332,   338,
+     345,   348,   352
 };
 #endif
 
@@ -1591,498 +1589,498 @@ yyreduce:
   switch (yyn)
     {
   case 3:
-#line 119 "compiler_hw2.y"
+#line 103 "compiler_hw2.y"
                                         {
         // printf("Stmt1\n");
     }
-#line 1599 "y.tab.c"
+#line 1597 "y.tab.c"
     break;
 
   case 4:
-#line 122 "compiler_hw2.y"
+#line 106 "compiler_hw2.y"
                          {
         // printf("Stmt2\n");
     }
-#line 1607 "y.tab.c"
+#line 1605 "y.tab.c"
     break;
 
   case 5:
-#line 125 "compiler_hw2.y"
+#line 109 "compiler_hw2.y"
                               {
         // printf("Stmt3\n");    
     }
-#line 1615 "y.tab.c"
+#line 1613 "y.tab.c"
     break;
 
   case 7:
-#line 132 "compiler_hw2.y"
+#line 116 "compiler_hw2.y"
                       {
         // printf("declaration\n");
     }
-#line 1623 "y.tab.c"
+#line 1621 "y.tab.c"
     break;
 
   case 9:
-#line 136 "compiler_hw2.y"
+#line 120 "compiler_hw2.y"
                  {
         // printf("expression\n");
     }
-#line 1631 "y.tab.c"
+#line 1629 "y.tab.c"
     break;
 
   case 10:
-#line 139 "compiler_hw2.y"
+#line 123 "compiler_hw2.y"
                {
         // printf("loopstmt\n");
     }
-#line 1639 "y.tab.c"
+#line 1637 "y.tab.c"
     break;
 
   case 11:
-#line 145 "compiler_hw2.y"
+#line 128 "compiler_hw2.y"
                     {
         printf("PRINT %s\n", (yyvsp[0].type));
     }
-#line 1647 "y.tab.c"
+#line 1645 "y.tab.c"
     break;
 
   case 12:
-#line 155 "compiler_hw2.y"
+#line 138 "compiler_hw2.y"
          {
         if(scope_toggle)
             scope_toggle2 = true;
     }
-#line 1656 "y.tab.c"
+#line 1654 "y.tab.c"
     break;
 
   case 13:
-#line 159 "compiler_hw2.y"
+#line 142 "compiler_hw2.y"
            {
         scope_toggle = true;       
     }
-#line 1664 "y.tab.c"
+#line 1662 "y.tab.c"
     break;
 
   case 14:
-#line 167 "compiler_hw2.y"
+#line 150 "compiler_hw2.y"
                         {
         // current_scope_level++;
     }
-#line 1672 "y.tab.c"
+#line 1670 "y.tab.c"
     break;
 
   case 15:
-#line 170 "compiler_hw2.y"
+#line 153 "compiler_hw2.y"
                                                     {
         // printf("------While END------\n");
         // current_scope_level++;
     }
-#line 1681 "y.tab.c"
+#line 1679 "y.tab.c"
     break;
 
   case 16:
-#line 177 "compiler_hw2.y"
+#line 160 "compiler_hw2.y"
                                     {
         // printf("LoopCondition1\n");
     }
-#line 1689 "y.tab.c"
+#line 1687 "y.tab.c"
     break;
 
   case 17:
-#line 180 "compiler_hw2.y"
+#line 163 "compiler_hw2.y"
                                                                            {
         // printf("LoopCondition2\n");
     }
-#line 1697 "y.tab.c"
+#line 1695 "y.tab.c"
     break;
 
   case 18:
-#line 187 "compiler_hw2.y"
+#line 169 "compiler_hw2.y"
                  {
         insert_symbol((yyvsp[0].id), (yyvsp[-1].type), yylineno, "-");
     }
-#line 1705 "y.tab.c"
+#line 1703 "y.tab.c"
     break;
 
   case 19:
-#line 190 "compiler_hw2.y"
+#line 172 "compiler_hw2.y"
                                     {        
         insert_symbol((yyvsp[-3].id), "array", yylineno, (yyvsp[-4].type));        
     }
-#line 1713 "y.tab.c"
+#line 1711 "y.tab.c"
     break;
 
   case 20:
-#line 193 "compiler_hw2.y"
+#line 175 "compiler_hw2.y"
                                    {          
         insert_symbol((yyvsp[-2].id), (yyvsp[-3].type), yylineno, "-");
     }
-#line 1721 "y.tab.c"
+#line 1719 "y.tab.c"
     break;
 
   case 21:
-#line 202 "compiler_hw2.y"
+#line 183 "compiler_hw2.y"
           { 
         (yyval.type) = "int";
     }
-#line 1729 "y.tab.c"
+#line 1727 "y.tab.c"
     break;
 
   case 22:
-#line 205 "compiler_hw2.y"
+#line 186 "compiler_hw2.y"
             { 
         (yyval.type) = "float";
     }
-#line 1737 "y.tab.c"
+#line 1735 "y.tab.c"
     break;
 
   case 23:
-#line 208 "compiler_hw2.y"
+#line 189 "compiler_hw2.y"
              { 
         (yyval.type) = "string";
     }
-#line 1745 "y.tab.c"
+#line 1743 "y.tab.c"
     break;
 
   case 24:
-#line 211 "compiler_hw2.y"
+#line 192 "compiler_hw2.y"
            { 
         (yyval.type) = "bool";
     }
-#line 1753 "y.tab.c"
+#line 1751 "y.tab.c"
     break;
 
   case 30:
-#line 225 "compiler_hw2.y"
+#line 204 "compiler_hw2.y"
                            {
         printf("ASSIGN\n");
     }
-#line 1761 "y.tab.c"
+#line 1759 "y.tab.c"
     break;
 
   case 31:
-#line 228 "compiler_hw2.y"
+#line 207 "compiler_hw2.y"
                                               {                   
         printf("ASSIGN\n");
     }
-#line 1769 "y.tab.c"
+#line 1767 "y.tab.c"
     break;
 
   case 32:
-#line 231 "compiler_hw2.y"
+#line 210 "compiler_hw2.y"
                                        {
         printf("ADD_ASSIGN\n");
     }
-#line 1777 "y.tab.c"
+#line 1775 "y.tab.c"
     break;
 
   case 33:
-#line 234 "compiler_hw2.y"
+#line 213 "compiler_hw2.y"
                                        {
         printf("SUB_ASSIGN\n");
     }
-#line 1785 "y.tab.c"
+#line 1783 "y.tab.c"
     break;
 
   case 34:
-#line 237 "compiler_hw2.y"
+#line 216 "compiler_hw2.y"
                                        {
         printf("MUL_ASSIGN\n");
     }
-#line 1793 "y.tab.c"
+#line 1791 "y.tab.c"
     break;
 
   case 35:
-#line 240 "compiler_hw2.y"
+#line 219 "compiler_hw2.y"
                                        {
         printf("QUO_ASSIGN\n");
     }
-#line 1801 "y.tab.c"
+#line 1799 "y.tab.c"
     break;
 
   case 36:
-#line 243 "compiler_hw2.y"
+#line 222 "compiler_hw2.y"
                                        {
         printf("REM_ASSIGN\n");
     }
-#line 1809 "y.tab.c"
+#line 1807 "y.tab.c"
     break;
 
   case 37:
-#line 249 "compiler_hw2.y"
+#line 227 "compiler_hw2.y"
                                 {
         printf("ADD\n");
     }
-#line 1817 "y.tab.c"
+#line 1815 "y.tab.c"
     break;
 
   case 38:
-#line 252 "compiler_hw2.y"
+#line 230 "compiler_hw2.y"
                                 {
         printf("SUB\n");
     }
-#line 1825 "y.tab.c"
+#line 1823 "y.tab.c"
     break;
 
   case 39:
-#line 255 "compiler_hw2.y"
+#line 233 "compiler_hw2.y"
                                 {
         printf("MUL\n");
     }
-#line 1833 "y.tab.c"
+#line 1831 "y.tab.c"
     break;
 
   case 40:
-#line 258 "compiler_hw2.y"
+#line 236 "compiler_hw2.y"
                                 {
         printf("QUO\n");
     }
-#line 1841 "y.tab.c"
+#line 1839 "y.tab.c"
     break;
 
   case 41:
-#line 261 "compiler_hw2.y"
+#line 239 "compiler_hw2.y"
                                 {
         printf("REM\n");
     }
-#line 1849 "y.tab.c"
+#line 1847 "y.tab.c"
     break;
 
   case 42:
-#line 267 "compiler_hw2.y"
+#line 244 "compiler_hw2.y"
                            {
         printf("F to I\n");
     }
-#line 1857 "y.tab.c"
+#line 1855 "y.tab.c"
     break;
 
   case 43:
-#line 270 "compiler_hw2.y"
+#line 247 "compiler_hw2.y"
                              {        
         printf("I to F\n");
     }
-#line 1865 "y.tab.c"
+#line 1863 "y.tab.c"
     break;
 
   case 44:
-#line 276 "compiler_hw2.y"
+#line 252 "compiler_hw2.y"
                   {
         (yyval.type) = "bool";
     }
-#line 1873 "y.tab.c"
+#line 1871 "y.tab.c"
     break;
 
   case 45:
-#line 279 "compiler_hw2.y"
+#line 255 "compiler_hw2.y"
                   {
         (yyval.type) = "bool";
     }
-#line 1881 "y.tab.c"
+#line 1879 "y.tab.c"
     break;
 
   case 46:
-#line 285 "compiler_hw2.y"
+#line 260 "compiler_hw2.y"
                                 {
         printf("OR\n");
     }
-#line 1889 "y.tab.c"
+#line 1887 "y.tab.c"
     break;
 
   case 47:
-#line 288 "compiler_hw2.y"
+#line 263 "compiler_hw2.y"
                                  {
         printf("AND\n");
     }
-#line 1897 "y.tab.c"
+#line 1895 "y.tab.c"
     break;
 
   case 48:
-#line 294 "compiler_hw2.y"
+#line 268 "compiler_hw2.y"
                                 {
         printf("GTR\n"); 
     }
-#line 1905 "y.tab.c"
+#line 1903 "y.tab.c"
     break;
 
   case 49:
-#line 297 "compiler_hw2.y"
+#line 271 "compiler_hw2.y"
                                 { 
         printf("LSS\n"); 
     }
-#line 1913 "y.tab.c"
+#line 1911 "y.tab.c"
     break;
 
   case 50:
-#line 300 "compiler_hw2.y"
+#line 274 "compiler_hw2.y"
                                 { 
         printf("GEQ\n"); 
     }
-#line 1921 "y.tab.c"
+#line 1919 "y.tab.c"
     break;
 
   case 51:
-#line 303 "compiler_hw2.y"
+#line 277 "compiler_hw2.y"
                                 { 
         printf("LEQ\n"); 
     }
-#line 1929 "y.tab.c"
+#line 1927 "y.tab.c"
     break;
 
   case 52:
-#line 306 "compiler_hw2.y"
+#line 280 "compiler_hw2.y"
                                 { 
         printf("EQL\n"); 
     }
-#line 1937 "y.tab.c"
+#line 1935 "y.tab.c"
     break;
 
   case 53:
-#line 309 "compiler_hw2.y"
+#line 283 "compiler_hw2.y"
                                 { 
         printf("NEQ\n"); 
     }
-#line 1945 "y.tab.c"
+#line 1943 "y.tab.c"
     break;
 
   case 54:
-#line 315 "compiler_hw2.y"
+#line 288 "compiler_hw2.y"
            { 
         printf("TRUE\n");
         (yyval.type) = "bool";
     }
-#line 1954 "y.tab.c"
+#line 1952 "y.tab.c"
     break;
 
   case 55:
-#line 319 "compiler_hw2.y"
+#line 292 "compiler_hw2.y"
             { 
         printf("FALSE\n"); 
         (yyval.type) = "bool";
     }
-#line 1963 "y.tab.c"
+#line 1961 "y.tab.c"
     break;
 
   case 57:
-#line 327 "compiler_hw2.y"
+#line 299 "compiler_hw2.y"
                             {
         (yyval.type) = (yyvsp[-3].id);
     }
-#line 1971 "y.tab.c"
+#line 1969 "y.tab.c"
     break;
 
   case 58:
-#line 330 "compiler_hw2.y"
+#line 302 "compiler_hw2.y"
                  {        
         printf("STRING_LIT %s\n", (yyvsp[0].s_val));
         (yyval.type) = "string";
     }
-#line 1980 "y.tab.c"
+#line 1978 "y.tab.c"
     break;
 
   case 61:
-#line 336 "compiler_hw2.y"
+#line 308 "compiler_hw2.y"
            {
         (yyval.type) = "bool";
     }
-#line 1988 "y.tab.c"
+#line 1986 "y.tab.c"
     break;
 
   case 62:
-#line 339 "compiler_hw2.y"
+#line 311 "compiler_hw2.y"
                    {
         printf("INC\n");
     }
-#line 1996 "y.tab.c"
+#line 1994 "y.tab.c"
     break;
 
   case 63:
-#line 342 "compiler_hw2.y"
+#line 314 "compiler_hw2.y"
                    {
         printf("DEC\n");
     }
-#line 2004 "y.tab.c"
+#line 2002 "y.tab.c"
     break;
 
   case 64:
-#line 345 "compiler_hw2.y"
+#line 317 "compiler_hw2.y"
               {        
         printf("POS\n");     
     }
-#line 2012 "y.tab.c"
+#line 2010 "y.tab.c"
     break;
 
   case 65:
-#line 348 "compiler_hw2.y"
+#line 320 "compiler_hw2.y"
               {        
         printf("NEG\n");        
     }
-#line 2020 "y.tab.c"
+#line 2018 "y.tab.c"
     break;
 
   case 66:
-#line 351 "compiler_hw2.y"
+#line 323 "compiler_hw2.y"
                      {
         printf("NOT\n");
     }
-#line 2028 "y.tab.c"
+#line 2026 "y.tab.c"
     break;
 
   case 67:
-#line 357 "compiler_hw2.y"
+#line 328 "compiler_hw2.y"
               {         
         printf("INT_LIT %d\n", (yyvsp[0].i_val));
         (yyval.type) = "int";
     }
-#line 2037 "y.tab.c"
+#line 2035 "y.tab.c"
     break;
 
   case 68:
-#line 361 "compiler_hw2.y"
+#line 332 "compiler_hw2.y"
                 {         
         printf("FLOAT_LIT %f\n", (yyvsp[0].f_val));
         (yyval.type) = "float";        
     }
-#line 2046 "y.tab.c"
+#line 2044 "y.tab.c"
     break;
 
   case 69:
-#line 368 "compiler_hw2.y"
+#line 338 "compiler_hw2.y"
             {        
         printf("IDENT (name=%s, address=%d)\n", (yyvsp[0].id), lookup_symbol((yyvsp[0].id)));
         (yyval.id) = getType((yyvsp[0].id));
     }
-#line 2055 "y.tab.c"
+#line 2053 "y.tab.c"
     break;
 
   case 70:
-#line 375 "compiler_hw2.y"
+#line 345 "compiler_hw2.y"
                         {
         (yyval.type)=(yyvsp[-1].type);
     }
-#line 2063 "y.tab.c"
+#line 2061 "y.tab.c"
     break;
 
   case 71:
-#line 378 "compiler_hw2.y"
+#line 348 "compiler_hw2.y"
           {        
         current_scope_level++;
         // printf("--- Bracket Start ---\n");
     }
-#line 2072 "y.tab.c"
+#line 2070 "y.tab.c"
     break;
 
   case 72:
-#line 382 "compiler_hw2.y"
+#line 352 "compiler_hw2.y"
           {         
         dump_symbol();
         current_scope_level--;
         // printf("--- Bracket END ---\n");  
     }
-#line 2082 "y.tab.c"
+#line 2080 "y.tab.c"
     break;
 
 
-#line 2086 "y.tab.c"
+#line 2084 "y.tab.c"
 
       default: break;
     }
@@ -2314,7 +2312,8 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 390 "compiler_hw2.y"
+#line 360 "compiler_hw2.y"
+
 
 
 /* C code section */
@@ -2325,7 +2324,6 @@ int main(int argc, char *argv[])
     } else {
         yyin = stdin;
     }
-
     create_symbol();
     yyparse();
     
@@ -2334,11 +2332,9 @@ int main(int argc, char *argv[])
     fclose(yyin);
     return 0;
 }
-
 static void create_symbol(void){
     ;
 }
-
 static void insert_symbol(char* var_name, char* var_type, int lineno, char* element){    
     node = (struct symbol_table*)malloc(sizeof(struct symbol_table));
     node->next = NULL;
@@ -2352,7 +2348,6 @@ static void insert_symbol(char* var_name, char* var_type, int lineno, char* elem
     node->lineno = lineno;
     node->printed = 0;
     strcpy(node->element_type,element);
-
     if(head == NULL){
         head = node;
     }
@@ -2365,7 +2360,6 @@ static void insert_symbol(char* var_name, char* var_type, int lineno, char* elem
     }
     printf("> Insert {%s} into symbol table (scope level: %d)\n",node->name, node->scope_level); 
 }
-
 static int lookup_symbol(char* var_name){
     current = head;
     if(head == NULL){
@@ -2414,14 +2408,12 @@ static int lookup_symbol(char* var_name){
     return -1;    
 }
 
-static void dump_symbol(void){    
+static void dump_symbol(void){                                                  
     printf("> Dump symbol table (scope level: %d)\n", current_scope_level);
     printf("%-10s%-10s%-10s%-10s%-10s%s\n",
            "Index", "Name", "Type", "Address", "Lineno", "Element type");    
     printList(head);
-
 }
-
 void printList(struct symbol_table* head){
     // printf("Linked_List:");
     int index = 0;
@@ -2445,7 +2437,6 @@ void printList(struct symbol_table* head){
         }
     }
 }
-
 char* getType(char* var_name){
     if(head == NULL){
         perror("Error: Head is NULL");
@@ -2453,9 +2444,7 @@ char* getType(char* var_name){
     }
     else{        
         current = head;
-
         //FIXME: Try to use the following code to replace getType access linkedlist with go through node content before checking current->next != NULL
-
         /* do {
             if(!strcmp(current->name, var_name)){
                 // If type is array, then return its element_type

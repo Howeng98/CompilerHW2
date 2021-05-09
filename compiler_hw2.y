@@ -1,17 +1,15 @@
 // TODO: Deadline 2021/05/27 23:59
-
 %{
     #include "common.h" //Extern variables that communicate with lex
     #include "string.h"
     #include "stdbool.h"
     // #define YYDEBUG 1
     // int yydebug = 1;
-
     extern int yylineno;
     extern int yylex();
     extern FILE *yyin;
     extern char* yytext;
-    
+
     int current_scope_level = 0;
     bool scope_toggle = false;
     bool scope_toggle2 = false;
@@ -19,11 +17,11 @@
     char arithmetic[5];
     int index_in_each_scope[5] = {0};
 
+
     void yyerror (char const *s)
     {
         printf("error:%d: %s\n", yylineno, s);
     }
-
     /* Define a struct to store variables information */
     struct symbol_table{
         int index;
@@ -36,7 +34,6 @@
         char element_type[10];
         struct symbol_table* next;
     };
-
     struct symbol_table* head = NULL;
     struct symbol_table* node;
     struct symbol_table* current = NULL;
@@ -49,13 +46,10 @@
     void printList(struct symbol_table* head);
     char* getType(char* var_name);
 %}
-
 %error-verbose
-
 /* Use variable or self-defined structure to represent
  * nonterminal and token type
  */
-
 %union {
     int i_val;
     float f_val;
@@ -64,8 +58,6 @@
     char *boool;
     char *type;    
 }
-
-
 /* Token without return */
 %token ADD SUB MUL QUO REM
 %token INT FLOAT BOOL STRING
@@ -76,7 +68,6 @@
 %token SEMICOLON
 %token IF ELSE WHILE FOR PRINT
 %token TRUE FALSE
-
 
 
 %right LOR LAND
@@ -91,30 +82,23 @@
 %left '{' '}'
 %nonassoc '(' ')'
 %left SEMICOLON
-
-
 /* Token with return, which need to sepcify type */
 %token <i_val> INT_LIT
 %token <f_val> FLOAT_LIT
 %token <s_val> STRING_LIT
 %token <id> IDENT
-
 /* Nonterminal with return, which need to sepcify type */
 %type <boool> LogicalExpr CompareExpr
 %type <type> Expression ConversionExpr AssignmentExpr LoopCondition
 %type <type> BoolExpr ArithmeticExpr TermExpr Bool Num Type Bracket 
 %type <id>   ID
-
 /* Yacc will start at this nonterminal */
 %start Program
-
 /* Grammar section */
 %%
-
 Program
     : StatementList 
 ;
-
 StatementList
     : StatementList Statement SEMICOLON {
         // printf("Stmt1\n");
@@ -140,16 +124,14 @@ Statement
         // printf("loopstmt\n");
     }
 ;
-
 PrintStmt
     : PRINT Bracket {
-        // printf("error:%d: non-bool (type %s) used as for condition\n", yylineno, $3);
         printf("PRINT %s\n", $2);
     }
     /* | PRINT '(' TermExpr ')' {
         printf("PRINT %s\n", $3);
     } */
-    
+
 ;
 
 IfStmt    
@@ -183,7 +165,6 @@ LoopCondition
     }
 ;
 
-
 DeclarationStmt
     : Type IDENT {
         insert_symbol($2, $1, yylineno, "-");
@@ -198,7 +179,6 @@ DeclarationStmt
         printf("STRING_LIT %s\n", $4);
     } */
 ;
-
 Type
     : INT { 
         $$ = "int";
@@ -213,7 +193,6 @@ Type
         $$ = "bool";
     }
 ;
-
 Expression
     : AssignmentExpr 
     | ArithmeticExpr
@@ -221,12 +200,8 @@ Expression
     | TermExpr
     | BoolExpr          
 ;
-
 AssignmentExpr
     : ID ASSIGN Expression {
-        if(strcmp($1,$3) != 0){
-            printf("error:%d: invalid operation: ASSIGN (mismatched types %s and %s)\n", yylineno, $1, $3);
-        }
         printf("ASSIGN\n");
     }
     | ID '[' Expression ']' ASSIGN Expression {                   
@@ -248,37 +223,23 @@ AssignmentExpr
         printf("REM_ASSIGN\n");
     }
 ;
-
 ArithmeticExpr
     : Expression ADD Expression {
-        // if(strcmp($1,$3) != 0){
-        //     printf("error:%d: invalid operation: ADD (mismatched types %s and %s)\n", yylineno, $1, $3);
-        // }
         printf("ADD\n");
     }
     | Expression SUB Expression {
-        // if(strcmp($1,$3) != 0){
-        //     printf("error:%d: invalid operation: SUB (mismatched types %s and %s)\n", yylineno, $1, $3);
-        // }
         printf("SUB\n");
     }
     | Expression MUL Expression {
         printf("MUL\n");
     }
     | Expression QUO Expression {
-        // if(!strcmp($1,"float")|| !strcmp($3,"float")){
-        //     printf("error:%d: invalid operation: (operator QUO not defined on float)\n", yylineno);
-        // }
         printf("QUO\n");
     }
     | Expression REM Expression {
-        // if(!strcmp($1,"float")|| !strcmp($3,"float")){
-        //     printf("error:%d: invalid operation: (operator REM not defined on float)\n", yylineno);
-        // }
         printf("REM\n");
     }
 ;
-
 ConversionExpr
     : '(' INT ')' TermExpr {
         printf("F to I\n");
@@ -287,7 +248,6 @@ ConversionExpr
         printf("I to F\n");
     }
 ;
-
 BoolExpr
     : LogicalExpr {
         $$ = "bool";
@@ -296,28 +256,14 @@ BoolExpr
         $$ = "bool";
     }
 ;
-
 LogicalExpr
     : Expression LOR Expression {
-        // if(strcmp($1, "bool") != 0){
-        //     printf("error:%d: invalid operation: (operator OR not defined on %s)\n", yylineno, $1);
-        // }
-        // else if(strcmp($3, "bool") != 0){
-        //     printf("error:%d: invalid operation: (operator OR not defined on %s)\n", yylineno, $3);
-        // }
         printf("OR\n");
     }
     | Expression LAND Expression {
-        // if(strcmp($1, "bool") != 0){
-        //     printf("error:%d: invalid operation: (operator AND not defined on %s)\n", yylineno, $1);
-        // }
-        // else if(strcmp($3, "bool") != 0){
-        //     printf("error:%d: invalid operation: (operator AND not defined on %s)\n", yylineno, $3);
-        // }
         printf("AND\n");
     }
 ;
-
 CompareExpr
     : Expression GTR Expression {
         printf("GTR\n"); 
@@ -338,7 +284,6 @@ CompareExpr
         printf("NEQ\n"); 
     }
 ;
-
 Bool
     : TRUE { 
         printf("TRUE\n");
@@ -349,7 +294,6 @@ Bool
         $$ = "bool";
     }
 ;
-
 TermExpr
     : ID    
     | ID '[' Expression ']' {
@@ -380,7 +324,6 @@ TermExpr
         printf("NOT\n");
     }    
 ;
-
 Num
     : INT_LIT {         
         printf("INT_LIT %d\n", $1);
@@ -391,7 +334,6 @@ Num
         $$ = "float";        
     }
 ;
-
 ID
     : IDENT {        
         printf("IDENT (name=%s, address=%d)\n", $1, lookup_symbol($1));
@@ -400,8 +342,8 @@ ID
 ;
 
 Bracket
-    : '(' Expression ')'{        
-        $$=$2;        
+    : '(' Expression ')'{
+        $$=$2;
     }
     | '{' {        
         current_scope_level++;
@@ -412,10 +354,11 @@ Bracket
         current_scope_level--;
         // printf("--- Bracket END ---\n");  
     }
-    
+
 ;
 
 %%
+
 
 /* C code section */
 int main(int argc, char *argv[])
@@ -425,7 +368,6 @@ int main(int argc, char *argv[])
     } else {
         yyin = stdin;
     }
-
     create_symbol();
     yyparse();
     
@@ -434,11 +376,9 @@ int main(int argc, char *argv[])
     fclose(yyin);
     return 0;
 }
-
 static void create_symbol(void){
     ;
 }
-
 static void insert_symbol(char* var_name, char* var_type, int lineno, char* element){    
     node = (struct symbol_table*)malloc(sizeof(struct symbol_table));
     node->next = NULL;
@@ -452,7 +392,6 @@ static void insert_symbol(char* var_name, char* var_type, int lineno, char* elem
     node->lineno = lineno;
     node->printed = 0;
     strcpy(node->element_type,element);
-
     if(head == NULL){
         head = node;
     }
@@ -465,7 +404,6 @@ static void insert_symbol(char* var_name, char* var_type, int lineno, char* elem
     }
     printf("> Insert {%s} into symbol table (scope level: %d)\n",node->name, node->scope_level); 
 }
-
 static int lookup_symbol(char* var_name){
     current = head;
     if(head == NULL){
@@ -514,19 +452,17 @@ static int lookup_symbol(char* var_name){
     return -1;    
 }
 
-static void dump_symbol(void){    
+static void dump_symbol(void){                                                  
     printf("> Dump symbol table (scope level: %d)\n", current_scope_level);
     printf("%-10s%-10s%-10s%-10s%-10s%s\n",
            "Index", "Name", "Type", "Address", "Lineno", "Element type");    
     printList(head);
-
 }
-
 void printList(struct symbol_table* head){
     // printf("Linked_List:");
     int index = 0;
     if(head == NULL){
-        perror("Error:Head is NULL!!!");
+        perror("Error:Head is NULL!");
         return;
     }
     else{
@@ -545,7 +481,6 @@ void printList(struct symbol_table* head){
         }
     }
 }
-
 char* getType(char* var_name){
     if(head == NULL){
         perror("Error: Head is NULL");
@@ -553,9 +488,7 @@ char* getType(char* var_name){
     }
     else{        
         current = head;
-
         //FIXME: Try to use the following code to replace getType access linkedlist with go through node content before checking current->next != NULL
-
         /* do {
             if(!strcmp(current->name, var_name)){
                 // If type is array, then return its element_type
