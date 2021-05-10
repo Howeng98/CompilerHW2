@@ -10,11 +10,7 @@
     extern FILE *yyin;
     extern char* yytext;
 
-    int current_scope_level = 0;
-    int for_button = 0;
-    int while_button = 0;
-    bool scope_toggle = false;
-    bool scope_toggle2 = false;
+    int current_scope_level = 0;    
     int address = 0;
     char arithmetic[5];
     int index_in_each_scope[5] = {0};
@@ -140,13 +136,11 @@ PrintStmt
 ;
 
 IfStmt    
-    : IF {
-        if(scope_toggle)
-            scope_toggle2 = true;
+    : Bracket Bracket StatementList '}' {
+        dump_symbol();
+        current_scope_level--;
     }
-    | ELSE {
-        scope_toggle = true;       
-    }
+    | ELSE
 ;
 
 ;
@@ -172,10 +166,7 @@ DeclarationStmt
     }
     | Type IDENT ASSIGN Expression {          
         insert_symbol($2, $1, yylineno, "-");
-    }
-    /* | Type IDENT ASSIGN STRING_LIT SEMICOLON{
-        printf("STRING_LIT %s\n", $4);
-    } */
+    }    
 ;
 Type
     : INT { 
@@ -470,47 +461,42 @@ static int lookup_symbol(char* var_name){
     if(head == NULL){
         return -1;
     }
-    else {
+    else{
+        // go through the whole linkedList with scope_level == current_scope_level
         while(current->next != NULL){
             // **current->scope_level == current_scope_level**
             // make sure that current->scope_level is match current_scope_level
 
             // **current->scope_level == 0**
-            // return current->address when the variable is define in global(scope_level 0)
-            if(scope_toggle && scope_toggle2){
-                current_scope_level++;
-                if(!strcmp(current->name, var_name) && (current->scope_level == current_scope_level)){
-                    scope_toggle = false;
-                    scope_toggle2 = false;
-                    current_scope_level--;
-                    return current->address;
-                }
-                current_scope_level--;                 
-            }
-            else{
-                if(!strcmp(current->name, var_name) && (current->scope_level == current_scope_level || current->scope_level == 0) && current->printed == 0){
-                    return current->address;
-                }
-            }            
-            current = current->next;            
-        }
-        if(scope_toggle && scope_toggle2){
-                current_scope_level++;
-                if(!strcmp(current->name, var_name) && (current->scope_level == current_scope_level)){
-                    scope_toggle = false;
-                    scope_toggle2 = false;
-                    current_scope_level--;
-                    return current->address;
-                }
-                current_scope_level--;
-            }
-        else{
-            if(!strcmp(current->name, var_name) && (current->scope_level == current_scope_level || current->scope_level == 0) && current->printed == 0){
+            // return current->address when the variable is define in global(scope_level 0)                                    
+            if(!strcmp(current->name, var_name) && (current->scope_level == current_scope_level) && current->printed == 0){
                 return current->address;
-            }
+            }                                                
+            current = current->next;
         }        
-    }    
-    return -1;    
+        if(!strcmp(current->name, var_name) && (current->scope_level == current_scope_level) && current->printed == 0){
+            return current->address;
+        }
+        
+        // go through the whole linkedList again with scope_level == 0 (global variable)
+        current = head;
+        while(current->next != NULL){
+            // **current->scope_level == current_scope_level**
+            // make sure that current->scope_level is match current_scope_level
+
+            // **current->scope_level == 0**
+            // return current->address when the variable is define in global(scope_level 0)                                    
+            if(!strcmp(current->name, var_name) && (current->scope_level == 0) && current->printed == 0){
+                return current->address;
+            }                                               
+            current = current->next;
+        }        
+        if(!strcmp(current->name, var_name) && (current->scope_level == 0) && current->printed == 0){
+            return current->address;
+        }
+        return -2;                          
+    }
+    return -1;
 }
 
 static void dump_symbol(void){                                                  
