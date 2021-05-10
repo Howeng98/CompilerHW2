@@ -18,7 +18,7 @@ INT_LIT 0
 ASSIGN
 IDENT (name=i, address=1)
 INT_LIT 10
-LST
+LSS
 IDENT (name=i, address=1)
 INC
 IDENT (name=i, address=1)

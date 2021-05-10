@@ -11,6 +11,8 @@
     extern char* yytext;
 
     int current_scope_level = 0;
+    int for_button = 0;
+    int while_button = 0;
     bool scope_toggle = false;
     bool scope_toggle2 = false;
     int address = 0;
@@ -45,6 +47,8 @@
     static void dump_symbol(void);
     void printList(struct symbol_table* head);
     char* getType(char* var_name);
+    // void TypeCheck(char* ,char*,char*,int ,char* );
+    void TypeEqual(char* a,char*b,int line,char* action);
 %}
 %error-verbose
 /* Use variable or self-defined structure to represent
@@ -56,7 +60,7 @@
     char *s_val;
     char *id;
     char *boool;
-    char *type;    
+    char *type;   
 }
 /* Token without return */
 %token ADD SUB MUL QUO REM
@@ -89,7 +93,7 @@
 %token <id> IDENT
 /* Nonterminal with return, which need to sepcify type */
 %type <boool> LogicalExpr CompareExpr
-%type <type> Expression ConversionExpr AssignmentExpr LoopCondition
+%type <type> Expression ConversionExpr AssignmentExpr
 %type <type> BoolExpr ArithmeticExpr TermExpr Bool Num Type Bracket 
 %type <id>   ID
 /* Yacc will start at this nonterminal */
@@ -124,9 +128,10 @@ Statement
         // printf("loopstmt\n");
     }
 ;
+
 PrintStmt
-    : PRINT Bracket {
-        printf("PRINT %s\n", $2);
+    : PRINT Bracket {        
+        printf("PRINT %s\n", $2);       
     }
     /* | PRINT '(' TermExpr ')' {
         printf("PRINT %s\n", $3);
@@ -147,22 +152,15 @@ IfStmt
 ;
 
 LoopStmt
-    : FOR LoopCondition {
-        // current_scope_level++;
+    : Bracket Bracket StatementList '}' {        
+        // if and while condition
+        dump_symbol();
+        current_scope_level--;
     }
-    | WHILE Expression Bracket StatementList Bracket{
-        // printf("------While END------\n");
-        // current_scope_level++;
-    }    
-;
-
-LoopCondition
-    : Expression Bracket Expression {
-        // printf("LoopCondition1\n");
+    | FOR '(' Expression SEMICOLON Expression SEMICOLON Expression ')' Bracket StatementList Bracket {
+        // for condition        
     }
-    | '(' Expression SEMICOLON Expression SEMICOLON Expression ')' Bracket {
-        // printf("LoopCondition2\n");
-    }
+    
 ;
 
 DeclarationStmt
@@ -195,13 +193,18 @@ Type
 ;
 Expression
     : AssignmentExpr 
-    | ArithmeticExpr
-    | ConversionExpr
-    | TermExpr
-    | BoolExpr          
+    | ArithmeticExpr {$$ = $$;}
+    | ConversionExpr {$$ = $$;}
+    | TermExpr {$$ = $$;}
+    | BoolExpr {
+        $$ = "bool";
+    }    
 ;
 AssignmentExpr
     : ID ASSIGN Expression {
+        if(strcmp($1,$3) != 0){
+            printf("error:%d: invalid operation: ASSIGN (mismatched types %s and %s)\n", yylineno, $1, $3);
+        }
         printf("ASSIGN\n");
     }
     | ID '[' Expression ']' ASSIGN Expression {                   
@@ -224,78 +227,114 @@ AssignmentExpr
     }
 ;
 ArithmeticExpr
-    : Expression ADD Expression {
+    : Expression ADD Expression {        
+        
+        if(strcmp($1,$3) != 0){
+            printf("error:%d: invalid operation: ADD (mismatched types %s and %s)\n", yylineno, $1, $3);
+        }
         printf("ADD\n");
+        // printf("$1=%s | $3=%s\n", $1, $3);        
     }
     | Expression SUB Expression {
+        if(strcmp($1,$3) != 0){
+            printf("error:%d: invalid operation: SUB (mismatched types %s and %s)\n", yylineno, $1, $3);
+        }
         printf("SUB\n");
+        // printf("$1=%s | $3=%s\n", $1, $3);        
     }
     | Expression MUL Expression {
         printf("MUL\n");
+        // printf("$1=%s | $3=%s\n", $1, $3);        
     }
     | Expression QUO Expression {
         printf("QUO\n");
+        // printf("$1=%s | $3=%s\n", $1, $3);        
     }
     | Expression REM Expression {
+        if(!strcmp($1,"float")|| !strcmp($3,"float")){
+            printf("error:%d: invalid operation: (operator REM not defined on float)\n", yylineno);
+        }
         printf("REM\n");
+        // printf("$1=%s | $3=%s\n", $1, $3);        
     }
 ;
 ConversionExpr
     : '(' INT ')' TermExpr {
         printf("F to I\n");
+        $$ = "int";
     }
     | '(' FLOAT ')' TermExpr {        
         printf("I to F\n");
+        $$ = "float";
     }
 ;
 BoolExpr
-    : LogicalExpr {
-        $$ = "bool";
-    }
-    | CompareExpr {
-        $$ = "bool";
-    }
+    : LogicalExpr { $$ = $$;}
+    | CompareExpr { $$ = $$;}
 ;
+
 LogicalExpr
     : Expression LOR Expression {
+        if(strcmp($1, "bool") != 0){
+            printf("error:%d: invalid operation: (operator OR not defined on %s)\n", yylineno, $1);
+        }
+        else if(strcmp($3, "bool") != 0){
+            printf("error:%d: invalid operation: (operator OR not defined on %s)\n", yylineno, $3);
+        }
+        $$ = $1;
         printf("OR\n");
     }
     | Expression LAND Expression {
+        if(strcmp($1, "bool") != 0){
+            printf("error:%d: invalid operation: (operator AND not defined on %s)\n", yylineno, $1);
+        }
+        else if(strcmp($3, "bool") != 0){
+            printf("error:%d: invalid operation: (operator AND not defined on %s)\n", yylineno, $3);
+        }
+        $$ = $1;
         printf("AND\n");
     }
 ;
 CompareExpr
     : Expression GTR Expression {
-        printf("GTR\n"); 
+        $$ = $1;
+        printf("GTR\n");
     }
     | Expression LSS Expression { 
+        $$ = $1;
         printf("LSS\n"); 
     }
     | Expression GEQ Expression { 
+        $$ = $1;
         printf("GEQ\n"); 
     }
     | Expression LEQ Expression { 
+        $$ = $1;
         printf("LEQ\n"); 
     }
     | Expression EQL Expression { 
+        $$ = $1;
         printf("EQL\n"); 
     }
     | Expression NEQ Expression { 
+        $$ = $1;
         printf("NEQ\n"); 
     }
 ;
 Bool
-    : TRUE { 
-        printf("TRUE\n");
+    : TRUE {
         $$ = "bool";
+        printf("TRUE\n");        
     }
     | FALSE { 
-        printf("FALSE\n"); 
         $$ = "bool";
+        printf("FALSE\n");        
     }
 ;
 TermExpr
-    : ID    
+    : ID {
+        $$ = $1;
+    }
     | ID '[' Expression ']' {
         $$ = $1;
     }
@@ -303,10 +342,16 @@ TermExpr
         printf("STRING_LIT %s\n", $1);
         $$ = "string";
     }
-    | Num
-    | Bracket
+    | Num {
+        $$ = $1;
+        // printf("$$ = %s\n",$$);
+    }
+    | Bracket {
+        $$ = $$;
+    }
     | Bool {
-        $$ = "bool";
+        $$ = $$;
+        // printf("$$ = %s\n",$$);
     }
     | TermExpr INC {
         printf("INC\n");
@@ -314,14 +359,20 @@ TermExpr
     | TermExpr DEC {
         printf("DEC\n");
     }
-    | ADD Num {        
-        printf("POS\n");     
+    | ADD Num {          
+        printf("POS\n");
+        $$ = $2;
+        // printf("$$ = %s\n",$$);
     }
     | SUB Num {        
         printf("NEG\n");        
+        $$ = $2;
+        // printf("$$ = %s\n",$$);
     } 
     | NOT Expression {
         printf("NOT\n");
+        $$ = $2;
+        // printf("$$ = %s\n",$$);
     }    
 ;
 Num
@@ -331,7 +382,7 @@ Num
     }
     | FLOAT_LIT {         
         printf("FLOAT_LIT %f\n", $1);
-        $$ = "float";        
+        $$ = "float";
     }
 ;
 ID
@@ -342,17 +393,27 @@ ID
 ;
 
 Bracket
-    : '(' Expression ')'{
-        $$=$2;
+    : '(' Expression ')'{        
+        $$ = $2;
     }
     | '{' {        
         current_scope_level++;
         // printf("--- Bracket Start ---\n");
     }
-    | '}' {         
+    | '}' {
         dump_symbol();
         current_scope_level--;
         // printf("--- Bracket END ---\n");  
+    }
+    | WHILE Bracket {
+        if(strcmp($2,"bool")!=0){
+            printf("error:%d: non-bool (type %s) used as for condition\n", yylineno+1, $2);
+        }
+    }
+    | IF Bracket {
+        if(strcmp($2,"bool")!=0){
+            printf("error:%d: non-bool (type %s) used as for condition\n", yylineno+1, $2);
+        }
     }
 
 ;
@@ -462,7 +523,7 @@ void printList(struct symbol_table* head){
     // printf("Linked_List:");
     int index = 0;
     if(head == NULL){
-        perror("Error:Head is NULL!");
+        perror("Error:Head is NULL");
         return;
     }
     else{
@@ -483,7 +544,7 @@ void printList(struct symbol_table* head){
 }
 char* getType(char* var_name){
     if(head == NULL){
-        perror("Error: Head is NULL");
+        perror("Error: Head is NULL！！！");
         exit(EXIT_FAILURE);
     }
     else{        
@@ -522,4 +583,11 @@ char* getType(char* var_name){
         }        
     }
     return NULL;
+}
+
+void TypeEqual(char* a,char*b,int line,char* action){
+    if(strcmp(a,b)!=0)
+    {
+        printf("error:%d: invalid operation: %s (mismatched types %s and %s)\n",line,action,a,b);
+    }  
 }

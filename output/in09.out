@@ -38,28 +38,26 @@ ADD
 error:12: invalid operation: (operator OR not defined on int)
 OR
 FLOAT_LIT 1.000000
-FLOAT_LIT 1.000000
 error:15: non-bool (type float) used as for condition
+FLOAT_LIT 1.000000
 PRINT float
 > Dump symbol table (scope level: 1)
 Index     Name      Type      Address   Lineno    Element type
 IDENT (name=x, address=0)
 INT_LIT 1
 ADD
-IDENT (name=x, address=0)
 error:19: non-bool (type int) used as for condition
+IDENT (name=x, address=0)
 PRINT int
 > Dump symbol table (scope level: 1)
 Index     Name      Type      Address   Lineno    Element type
 FLOAT_LIT 2.000000
 FLOAT_LIT 2.000000
-error:23: non-bool (type float) used as for condition
 PRINT float
 > Dump symbol table (scope level: 1)
 Index     Name      Type      Address   Lineno    Element type
 IDENT (name=x, address=0)
 IDENT (name=x, address=0)
-error:27: non-bool (type int) used as for condition
 PRINT int
 > Dump symbol table (scope level: 1)
 Index     Name      Type      Address   Lineno    Element type
