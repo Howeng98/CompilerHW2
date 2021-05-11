@@ -41,6 +41,13 @@ Judge
 python3 judge/judge.py -v 1
 ```
 
+## Important Concepts and Note
+
+  - Always becareful the **precedence line** of ``ADD`` ``SUB`` and ``MUL`` ``QUO`` ``REM``. Don't mess up, otherwise your arithmetic will go wrong.
+  - The deeper syntax tree will be executed and the syntax grammar will execute in **Leftmost**. If you need to print anything before ``expression``, then create another branch tree to make that tokens operation can be executed and print relating message immediately.
+  - Remmeber to pass **return value** back to previous syntax tree level. Otherwise your syntax tree won't work properly with return value. E.g. ``$$ = $1`` or ``$$ = $$``
+  - Go through ``symbol table`` with linked-list is recommended in the following part of ``compiler_hw3``.
+
 ## Environment Setup
 
   - Ubuntu 20.04.2LTS
