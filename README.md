@@ -1,5 +1,7 @@
 # Syntax Analyzer (Parser)
 
+![parser](https://user-images.githubusercontent.com/44123278/117787489-12bb8c00-b279-11eb-846b-b76dd352d5dc.png)
+
 This assignment is aim to build a ``parser`` for the μC language that supports print IO, arithmetic operations and some basic constructs for C with ``yacc``. At here, I'm doing build the code to analyze these tokens and check the syntax validity based on the given grammar rules as follow.
 
   - Define tokens and types
