@@ -23,3 +23,30 @@ Types refers to one of the μC variables types: ``integer``, ``float``, ``string
   6. Supports if statements.
   7. Support for statements.
   8. Detect semantic error and show the error message. The parser should show atleast the error type and the line number.  
+
+## Debug Command and Operation
+
+Make Makefile
+```
+$ make clean && make
+```
+
+Execute
+```
+$ ./myparser < input/in01_arithmetic.c > output/in01.out
+```
+
+Judge
+```
+python3 judge/judge.py -v 1
+```
+
+## Environment Setup
+
+  - Ubuntu 20.04.2LTS
+  - Install dependencies: ``$ sudo apt install gcc flex bison python3 git``
+
+## Related Work and References
+
+  - https://github.com/Howeng98/CompilerHW1#11-tokens-that-will-be-passed-to-the-parser
+  - https://github.com/Howeng98/schoolWorks/tree/master/compiler_construction
