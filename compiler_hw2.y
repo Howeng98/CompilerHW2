@@ -44,7 +44,7 @@
     void printList(struct symbol_table* head);
     char* getType(char* var_name);
     bool validType(char* return_value);
-    int reDeclared(char* var_name);
+    int reDeclared(char* var_name, char* var_type);
 %}
 %error-verbose
 /* Use variable or self-defined structure to represent
@@ -100,38 +100,24 @@ Program
     : StatementList 
 ;
 StatementList
-    : StatementList Statement SEMICOLON {
-        // printf("Stmt1\n");
-    }
-    | Statement SEMICOLON{
-        // printf("Stmt2\n");
-    }
-    | StatementList Statement {
-        // printf("Stmt3\n");    
-    }
+    : StatementList Statement SEMICOLON    
+    | StatementList Statement
+    | Statement SEMICOLON
+    | Statement
 ;
 
 Statement
     : PrintStmt
-    | DeclarationStmt {
-        // printf("declaration\n");
-    }
+    | DeclarationStmt
     | IfStmt
-    | Expression {
-        // printf("expression\n");
-    }
-    | LoopStmt {
-        // printf("loopstmt\n");
-    }
+    | Expression
+    | LoopStmt
 ;
 
 PrintStmt
     : PRINT Bracket {        
         printf("PRINT %s\n", $2);       
     }
-    /* | PRINT '(' TermExpr ')' {
-        printf("PRINT %s\n", $3);
-    } */
 
 ;
 
@@ -143,8 +129,6 @@ IfStmt
     | ELSE
 ;
 
-;
-
 LoopStmt
     : Bracket Bracket StatementList '}' {        
         // if and while condition
@@ -152,27 +136,30 @@ LoopStmt
         current_scope_level--;
     }
     | FOR '(' Expression SEMICOLON Expression SEMICOLON Expression ')' Bracket StatementList Bracket {
-        // for condition        
-    }
-    
+        // for condition
+    }    
 ;
 
 DeclarationStmt
     : Type IDENT {
-        if(reDeclared($2)==-1){
+        if(reDeclared($2, $1)==-1){
             insert_symbol($2, $1, yylineno, "-");
         }else{
-            printf("error:%d: %s redeclared in this block. previous declaration at line %d\n", yylineno, $2, reDeclared($2));
-        }
-        
+            printf("error:%d: %s redeclared in this block. previous declaration at line %d\n", yylineno, $2, reDeclared($2, $1));
+        }   
     }
     | Type IDENT '[' Expression ']' {        
-        insert_symbol($2, "array", yylineno, $1);        
+        if(reDeclared($2, $1)==-1){
+            insert_symbol($2, "array", yylineno, $1);
+        }else{
+            printf("error:%d: %s redeclared in this block. previous declaration at line %d\n", yylineno, $2, reDeclared($2, "array"));
+        }   
     }
     | Type IDENT ASSIGN Expression {          
         insert_symbol($2, $1, yylineno, "-");
     }    
 ;
+
 Type
     : INT { 
         $$ = "int";
@@ -191,10 +178,8 @@ Expression
     : AssignmentExpr 
     | ArithmeticExpr {$$ = $$;}
     | ConversionExpr {$$ = $$;}
-    | TermExpr {$$ = $$;}
-    | BoolExpr {
-        $$ = "bool";
-    }    
+    | TermExpr { $$ = $$; }
+    | BoolExpr { $$ = "bool"; }    
 ;
 AssignmentExpr
     : ID ASSIGN Expression {
@@ -494,6 +479,7 @@ static void insert_symbol(char* var_name, char* var_type, int lineno, char* elem
     printf("> Insert {%s} into symbol table (scope level: %d)\n",node->name, node->scope_level); 
 }
 static int lookup_symbol(char* var_name){
+    int temp_scope_level = current_scope_level;
     current = head;
     if(head == NULL){
         return -1;
@@ -505,22 +491,27 @@ static int lookup_symbol(char* var_name){
                 return current->address;
             }                                                
             current = current->next;
-        }        
+        }                
         if(!strcmp(current->name, var_name) && (current->scope_level == current_scope_level) && current->printed == 0){
             return current->address;
         }
         
-        // go through the whole linkedList again with scope_level == 0 (global variable)
-        current = head;
-        while(current->next != NULL){
-            if(!strcmp(current->name, var_name) && (current->scope_level == 0) && current->printed == 0){
+        // go through the whole linkedList again with scope_level == 0 (global variable)        
+        while(temp_scope_level >= 0){
+            current = head;
+            while(current->next != NULL){
+                /* printf("Loop tracking: scope:%d\n", temp_scope_level); */
+                if(!strcmp(current->name, var_name) && (current->scope_level == temp_scope_level) && current->printed == 0){
+                    return current->address;
+                }
+                current = current->next;
+            }
+            if(!strcmp(current->name, var_name) && (current->scope_level == temp_scope_level) && current->printed == 0){
                 return current->address;
-            }                                               
-            current = current->next;
-        }        
-        if(!strcmp(current->name, var_name) && (current->scope_level == 0) && current->printed == 0){
-            return current->address;
+            }
+            temp_scope_level--;
         }
+        
         return -2;// ident not found, return -2
     }    
 }
@@ -597,19 +588,19 @@ char* getType(char* var_name){
     return NULL;
 }
 
-int reDeclared(char* var_name){    
+int reDeclared(char* var_name, char* var_type){
     if(head == NULL){        
         return -1;
     }
     else{
         current = head;
         while(current->next != NULL){
-            if(!strcmp(current->name, var_name)){
+            if(!strcmp(current->name, var_name) && current->scope_level == current_scope_level){
                 return current->lineno;
             }
             current = current->next;
         }
-        if(!strcmp(current->name, var_name)){
+        if(!strcmp(current->name, var_name) && current->scope_level == current_scope_level){
             return current->lineno;
         }
     }
