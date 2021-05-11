@@ -43,8 +43,8 @@
     static void dump_symbol(void);
     void printList(struct symbol_table* head);
     char* getType(char* var_name);
-    // void TypeCheck(char* ,char*,char*,int ,char* );
-    void TypeEqual(char* a,char*b,int line,char* action);
+    bool validType(char* return_value);
+    int reDeclared(char* var_name);
 %}
 %error-verbose
 /* Use variable or self-defined structure to represent
@@ -159,7 +159,12 @@ LoopStmt
 
 DeclarationStmt
     : Type IDENT {
-        insert_symbol($2, $1, yylineno, "-");
+        if(reDeclared($2)==-1){
+            insert_symbol($2, $1, yylineno, "-");
+        }else{
+            printf("error:%d: %s redeclared in this block. previous declaration at line %d\n", yylineno, $2, reDeclared($2));
+        }
+        
     }
     | Type IDENT '[' Expression ']' {        
         insert_symbol($2, "array", yylineno, $1);        
@@ -193,29 +198,55 @@ Expression
 ;
 AssignmentExpr
     : ID ASSIGN Expression {
-        if(strcmp($1,$3) != 0){
-            printf("error:%d: invalid operation: ASSIGN (mismatched types %s and %s)\n", yylineno, $1, $3);
-        }
+        if(validType($1) && validType($3)){
+            if(strcmp($1,$3) != 0){
+               printf("error:%d: invalid operation: ASSIGN (mismatched types %s and %s)\n", yylineno, $1, $3);
+            }
+        }        
+        printf("ASSIGN\n");
+    }        
+    | ID '[' Expression ']' ASSIGN Expression {                 
         printf("ASSIGN\n");
     }
-    | ID '[' Expression ']' ASSIGN Expression {                   
-        printf("ASSIGN\n");
-    }
-    | Expression ADD_ASSIGN Expression {
+    | Expression ADD_ASSIGN Expression {        
         printf("ADD_ASSIGN\n");
-    }
-    | Expression SUB_ASSIGN Expression {
+    }    
+    | Expression SUB_ASSIGN Expression {                        
         printf("SUB_ASSIGN\n");
     }
-    | Expression MUL_ASSIGN Expression {
+    | Expression MUL_ASSIGN Expression {                
         printf("MUL_ASSIGN\n");
     }
-    | Expression QUO_ASSIGN Expression {
+    | Expression QUO_ASSIGN Expression {                      
         printf("QUO_ASSIGN\n");
     }
-    | Expression REM_ASSIGN Expression {
+    | Expression REM_ASSIGN Expression {                        
         printf("REM_ASSIGN\n");
     }
+    | Num ASSIGN Expression {                
+        printf("error:%d: cannot assign to %s\n", yylineno, $1);
+        printf("ASSIGN\n");
+    }
+    | Num ADD_ASSIGN Expression {        
+        printf("error:%d: cannot assign to %s\n", yylineno, $1);
+        printf("ADD_ASSIGN\n");
+    }
+    | Num SUB_ASSIGN Expression {                
+        printf("error:%d: cannot assign to %s\n", yylineno, $1);        
+        printf("SUB_ASSIGN\n");
+    }
+    | Num MUL_ASSIGN Expression {        
+        printf("error:%d: cannot assign to %s\n", yylineno, $1);        
+        printf("MUL_ASSIGN\n");
+    }
+    | Num QUO_ASSIGN Expression {        
+        printf("error:%d: cannot assign to %s\n", yylineno, $1);        
+        printf("QUO_ASSIGN\n");
+    }
+    | Num REM_ASSIGN Expression {        
+        printf("error:%d: cannot assign to %s\n", yylineno, $1);        
+        printf("REM_ASSIGN\n");
+    }    
 ;
 ArithmeticExpr
     : Expression ADD Expression {        
@@ -377,9 +408,15 @@ Num
     }
 ;
 ID
-    : IDENT {        
-        printf("IDENT (name=%s, address=%d)\n", $1, lookup_symbol($1));
-        $$ = getType($1);
+    : IDENT {
+        if(lookup_symbol($1) == -2){
+            printf("error:%d: undefined: %s\n", yylineno, $1);
+        }
+        else{
+            printf("IDENT (name=%s, address=%d)\n", $1, lookup_symbol($1));
+            $$ = getType($1);
+        }        
+        
     }
 ;
 
@@ -464,11 +501,6 @@ static int lookup_symbol(char* var_name){
     else{
         // go through the whole linkedList with scope_level == current_scope_level
         while(current->next != NULL){
-            // **current->scope_level == current_scope_level**
-            // make sure that current->scope_level is match current_scope_level
-
-            // **current->scope_level == 0**
-            // return current->address when the variable is define in global(scope_level 0)                                    
             if(!strcmp(current->name, var_name) && (current->scope_level == current_scope_level) && current->printed == 0){
                 return current->address;
             }                                                
@@ -481,11 +513,6 @@ static int lookup_symbol(char* var_name){
         // go through the whole linkedList again with scope_level == 0 (global variable)
         current = head;
         while(current->next != NULL){
-            // **current->scope_level == current_scope_level**
-            // make sure that current->scope_level is match current_scope_level
-
-            // **current->scope_level == 0**
-            // return current->address when the variable is define in global(scope_level 0)                                    
             if(!strcmp(current->name, var_name) && (current->scope_level == 0) && current->printed == 0){
                 return current->address;
             }                                               
@@ -494,9 +521,8 @@ static int lookup_symbol(char* var_name){
         if(!strcmp(current->name, var_name) && (current->scope_level == 0) && current->printed == 0){
             return current->address;
         }
-        return -2;                          
-    }
-    return -1;
+        return -2;// ident not found, return -2
+    }    
 }
 
 static void dump_symbol(void){                                                  
@@ -571,9 +597,31 @@ char* getType(char* var_name){
     return NULL;
 }
 
-void TypeEqual(char* a,char*b,int line,char* action){
-    if(strcmp(a,b)!=0)
-    {
-        printf("error:%d: invalid operation: %s (mismatched types %s and %s)\n",line,action,a,b);
-    }  
+int reDeclared(char* var_name){    
+    if(head == NULL){        
+        return -1;
+    }
+    else{
+        current = head;
+        while(current->next != NULL){
+            if(!strcmp(current->name, var_name)){
+                return current->lineno;
+            }
+            current = current->next;
+        }
+        if(!strcmp(current->name, var_name)){
+            return current->lineno;
+        }
+    }
+    return -1;
+}
+
+bool validType(char* return_value){
+    // return TRUE means that return_value $$ is var_type,not variable name
+    if(!strcmp(return_value, "int"))
+        return true;    
+    else if(!strcmp(return_value, "float"))
+        return true;    
+    else
+        return false;
 }
