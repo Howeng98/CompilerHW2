@@ -8,12 +8,16 @@ This assignment is aim to build a ``parser`` for the μC language that supports 
   - Design μC Grammar and implement the related actions
   - Handle semantic errors
 
+
+
 ## Structure
 
 Types refers to one of the μC variables types: ``integer``, ``float``, ``string``, and ``boolean``. Useful tips for defining a type are listed below.
 
   - Define a type for ``yylval`` using ``%union`` by yourself. For example, ``%union { int i_val; }`` means ``yylval`` is able to be accessed via the ``int`` type using the ``i_val`` variable.
   - Define a type for token using ``%type`` and give the type name like ``<`` and ``>``.
+
+
 
 ## What can this Parser do
 
@@ -25,6 +29,8 @@ Types refers to one of the μC variables types: ``integer``, ``float``, ``string
   6. Supports if statements.
   7. Support for statements.
   8. Detect semantic error and show the error message. The parser should show atleast the error type and the line number.  
+
+
 
 ## Debug Command and Operation
 
@@ -43,6 +49,8 @@ Judge
 python3 judge/judge.py -v 1
 ```
 
+
+
 ## Important Concepts and Note
 
   - Always becareful the **precedence line** of ``ADD`` ``SUB`` and ``MUL`` ``QUO`` ``REM``. Don't mess up, otherwise your arithmetic will go wrong.
@@ -50,10 +58,14 @@ python3 judge/judge.py -v 1
   - Remmeber to pass **return value** back to previous syntax tree level. Otherwise your syntax tree won't work properly with return value. E.g. ``$$ = $1`` or ``$$ = $$``
   - Go through ``symbol table`` with linked-list is recommended in the following part of ``compiler_hw3``.
 
+
+
 ## Environment Setup
 
   - Ubuntu 20.04.2LTS
   - Install dependencies: ``$ sudo apt install gcc flex bison python3 git``
+
+
 
 ## Related Work and References
 
