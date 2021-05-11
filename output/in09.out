@@ -52,11 +52,13 @@ PRINT int
 > Dump symbol table (scope level: 1)
 Index     Name      Type      Address   Lineno    Element type
 FLOAT_LIT 2.000000
+error:23: non-bool (type float) used as for condition
 FLOAT_LIT 2.000000
 PRINT float
 > Dump symbol table (scope level: 1)
 Index     Name      Type      Address   Lineno    Element type
 IDENT (name=x, address=0)
+error:27: non-bool (type int) used as for condition
 IDENT (name=x, address=0)
 PRINT int
 > Dump symbol table (scope level: 1)

@@ -2190,6 +2190,8 @@ State 96
    56            | Expression . EQL Expression
    57            | Expression . NEQ Expression
 
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
     MUL_ASSIGN  shift, and go to state 71
     QUO_ASSIGN  shift, and go to state 72
     REM_ASSIGN  shift, and go to state 73
@@ -2219,6 +2221,8 @@ State 97
    56            | Expression . EQL Expression
    57            | Expression . NEQ Expression
 
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
     MUL_ASSIGN  shift, and go to state 71
     QUO_ASSIGN  shift, and go to state 72
     REM_ASSIGN  shift, and go to state 73
@@ -2248,6 +2252,8 @@ State 98
    56            | Expression . EQL Expression
    57            | Expression . NEQ Expression
 
+    ADD_ASSIGN  shift, and go to state 69
+    SUB_ASSIGN  shift, and go to state 70
     MUL_ASSIGN  shift, and go to state 71
     QUO_ASSIGN  shift, and go to state 72
     REM_ASSIGN  shift, and go to state 73
@@ -2493,9 +2499,6 @@ State 105
    56            | Expression . EQL Expression
    57            | Expression . NEQ Expression
 
-    MUL         shift, and go to state 60
-    QUO         shift, and go to state 61
-    REM         shift, and go to state 62
     MUL_ASSIGN  shift, and go to state 71
     QUO_ASSIGN  shift, and go to state 72
     REM_ASSIGN  shift, and go to state 73
@@ -2525,9 +2528,6 @@ State 106
    56            | Expression . EQL Expression
    57            | Expression . NEQ Expression
 
-    MUL         shift, and go to state 60
-    QUO         shift, and go to state 61
-    REM         shift, and go to state 62
     MUL_ASSIGN  shift, and go to state 71
     QUO_ASSIGN  shift, and go to state 72
     REM_ASSIGN  shift, and go to state 73
@@ -2756,9 +2756,6 @@ State 113
    56            | Expression . EQL Expression
    57            | Expression . NEQ Expression
 
-    MUL         shift, and go to state 60
-    QUO         shift, and go to state 61
-    REM         shift, and go to state 62
     MUL_ASSIGN  shift, and go to state 71
     QUO_ASSIGN  shift, and go to state 72
     REM_ASSIGN  shift, and go to state 73
@@ -2788,9 +2785,6 @@ State 114
    56            | Expression . EQL Expression
    57            | Expression . NEQ Expression
 
-    MUL         shift, and go to state 60
-    QUO         shift, and go to state 61
-    REM         shift, and go to state 62
     MUL_ASSIGN  shift, and go to state 71
     QUO_ASSIGN  shift, and go to state 72
     REM_ASSIGN  shift, and go to state 73
